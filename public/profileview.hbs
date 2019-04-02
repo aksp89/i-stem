@@ -1,0 +1,19 @@
+<link rel="stylesheet" type="text/css" href="css/profile-style.css" />
+<div id="tabledata"></div>
+  <div id="update_link">
+<a href="update"> update data</a>
+</div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js">
+
+</script>
+
+<script src="js/Profile_table.js"></script>
+
+<script>
+var update_data= {{{ data }}}
+var profile=userdata(update_data)
+document.getElementById('tabledata').innerHTML=profile;
+</script>

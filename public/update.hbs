@@ -1,0 +1,560 @@
+<html>
+<head>
+<title>Update</title>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT" crossorigin="anonymous"></script>
+<script src="https://www.gstatic.com/firebasejs/5.6.0/firebase.js"></script>
+<script src="js/jquery.tagsinput-revisited.js"></script>
+<link rel="stylesheet" href="css/jquery.tagsinput-revisited.css">
+<link rel="stylesheet" href="css/profile-form.css">
+<script type="text/javascript" src="js/auth.js"></script>
+<style>
+*{
+box-sizing: border-box;
+}
+
+
+
+.navbar {
+overflow: hidden;
+background-color: #333;
+font-family: Arial;
+}
+
+/* Links inside the navbar */
+.navbar a {
+float: left;
+font-size: 16px;
+color: white;
+text-align: center;
+padding: 14px 16px;
+text-decoration: none;
+}
+
+/* The dropdown container */
+.dropdown {
+float: left;
+overflow: hidden;
+}
+
+/* Dropdown button */
+.dropdown .dropbtn {
+font-size: 16px;
+border: none;
+outline: none;
+color: white;
+padding: 14px 16px;
+background-color: inherit;
+font-family: inherit; /* Important for vertical align on mobile phones */
+margin: 0; /* Important for vertical align on mobile phones */
+}
+
+/* Add a red background color to navbar links on hover */
+.navbar a:hover, .dropdown:hover .dropbtn {
+background-color: red;
+}
+
+/* Dropdown content (hidden by default) */
+.dropdown-content {
+display: none;
+position: absolute;
+background-color: #f9f9f9;
+min-width: 160px;
+box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+float: none;
+color: black;
+padding: 12px 16px;
+text-decoration: none;
+display: block;
+text-align: left;
+}
+
+/* Add a grey background color to dropdown links on hover */
+.dropdown-content a:hover {
+background-color: #ddd;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+display: block;
+}
+
+
+
+
+  </style>
+</head>
+<body>
+	<div class="navbar">
+	  <a href="#">Home</a>
+	  <a href="#">about</a>
+
+		<div class="dropdown">
+			<button class="dropbtn">Resources
+				<i class="fa fa-caret-down"></i>
+			</button>
+			<div class="dropdown-content">
+				<a href="math">math-pix</a>
+		<a href="video">video indexer</a>
+			<a href="volunteers">Find volunteers</a>
+			</div></div>
+
+			  <div id="login"></div>
+		<div id="admin"></div>
+		<div id="user"></div>
+
+	</div>
+
+	<div id="container">
+	<form name="profileform" id="profileform"  action="/profile_update" enctype="multipart/form-data" onsubmit="return formValidate()" method="POST">
+	<div id="personal_info">
+	UserType
+	<br>
+	student with disability
+	<input type="radio" name="user_Type" id="user_Type4" value="1">
+	volunteer student
+	<input type="radio" name="user_Type" id="user_Type1" value="2">
+	volunteer professional
+	<input type="radio" name="user_Type" id="user_Type2" value="3">
+	volunteer others
+	<input type="radio" name="user_Type" id="user_Type3" value="4">
+	HR
+	<input type="radio" name="user_Type" id="user_Type5" value="5">
+	Admin
+	<input type="radio" name="user_Type" id="user_Type6" value="6">
+	other
+	<input type="radio" name="user_Type" id="user_Type0" value="0">
+	<br>
+	email
+	<input type="email" name="user_email" id="user_email">
+
+	First name
+	<input type="text" name="user_fname" id="user_fname">
+
+	last name
+	<input type="text" name="user_lname" id="user_lname">
+
+	mobile
+	<input type="number" name="user_mob" id="user_mob">
+	<br>
+	<br>
+	Gender
+
+	<br>
+	<input type="radio" name="gender" id="gender" value="M">Male
+	<input type="radio" name="gender" id="gender" value="F">Female
+	<input type="radio" name="gender" id="gender" value="O">other
+	<br>
+	<br>
+	Communities
+	<br>
+
+	<input type="checkbox" name="user_community" id="user_community" value="J">Junior
+	<input type="checkbox" name="user_community" id="user_community" value="Y">Youth
+	<input type="checkbox" name="user_community" id="user_community" value="M">Mentor
+	<input type="checkbox" name="user_community" id="user_community" value="F">Friends
+	<input type="checkbox" name="user_community" id="user_community" value="U">Updates
+	<input type="hidden" name="user_community_arr" id="user_community_arr">
+
+		<br>
+		<br>
+		state
+		<input type="text" name="state_location" id="state_location">
+		postal code
+		<input type="text" name="post_code" id="post_code">
+	</div>
+	<div id="Initiative">
+	<h2>Initiatives</h2>
+		<br>
+		trainings
+			<input type="text" name="user_training" id="user_training">
+
+		events
+			<input type="text" name="user_event" id="user_event">
+	</div>
+	<div id="profile">
+	<h2>profile</h2>
+	<br>
+		facebook
+			<input type="text" name="user_fb_id" id="user_fb_id">
+		twitter
+			<input type="text" name="user_twit_id" id="user_twit_id">
+		Linkedin
+			<input type="text" name="lkn_id" id="lkn_id">
+		website
+			<input type="text" name="website" id="website">
+	</div>
+	<div id="prof_education">
+	<h2>education</h2>
+	<br>
+			University name
+				<input type="text" name="uni_name" id="uni_name">
+			major
+				<input type="text" name="mjr" id="mjr">
+			class
+				<input type="text" name="class" id="class">
+			year_of_completion
+				<input type="number" name="yoc" id="yoc">
+
+			relevent_courses
+				<input type="text" name="user_edu_relevant_course" id="user_edu_relevant_course">
+			achievements
+				<input type="text" name="user_edu_achievement" id="user_edu_achievement">
+			extracurricular activity
+				<input type="text" name="user_edu_extracuract" id="user_edu_extracuract">
+	</div>
+	<div id="work_exp">
+	<h2>work experience</h2>
+	<br>
+		company
+				<input type="text" name="cname" id="cname">
+		location
+				<input type="text" name="loc" id="loc">
+		start date
+				<input type="date" name="startdate" id="startdate">
+		end date
+				<input type="date" name="enddate" id="enddate">
+		position
+				<input type="text" name="position" id="position">
+		summary_of_responsibility
+				<input type="text" name="sor" id="sor">
+		achievements
+				<input type="text" name="workexp_achievements" id="workexp_achievements">
+
+
+	current employment state
+	<br>
+		<input type="radio" name="cur_emp_state" id="cur_emp_state" value="E">Employed
+	<input type="radio" name="cur_emp_state" id="cur_emp_state" value="S">Seeking Employment
+	<input type="radio" name="cur_emp_state" id="cur_emp_state" value="ST">Student
+	<input type="radio" name="cur_emp_state" id="cur_emp_state" value="R">Retired
+	<br>
+	industry
+		<input type="text" name="industry" id="industry">
+		</div>
+		<div id="community_connect">
+	<h2>community_connect</h2>
+	<br>
+		skills
+		<input type="text" name="comm_skills" id="comm_skills">
+		skills_to_learn
+		<input type="text" name="comm_skills_learn" id="comm_skills_learn">
+		about you
+		<input type="text" name="about_you" id="about_you">
+		potential_matches
+		<input type="text" name="pot_mat" id="pot_mat">
+		</div>
+
+		<div id="volunteer">
+			<h2>volunteers</h2>
+			<br>
+		volunteers skill
+		<input type="text" name="vol_skill" id="vol_skill">
+		volunteer types
+		<br>
+		<input type="checkbox" name="vol_types" id="vol_types" value="1">Reader Writer
+	<input type="checkbox" name="vol_types" id="vol_types" value="2">Sign Language Interpreter
+	<input type="checkbox" name="vol_types" id="vol_types" value="3">Tutor
+	<input type="hidden" name="vol_types_arr" id="vol_types_arr">
+	<br>
+		Availability
+		<br>
+		Day
+		<select name="volunteer_availability" id="availability">
+		<option value="monday">Monday</option>
+		<option value="tuesday">Tuesday</option>
+		<option value="wednesday">Wednesday</option>
+		<option value="thursday">Thursday</option>
+		<option value="friday">Friday</option>
+		<option value="saturday">Saturday</option>
+		<option value="sunday">Sunday</option>
+		</select>
+		<br>
+		Time from
+		<input type="number" name="vol_availability_time_from_hours" id="vol_avaibility_time_from_hours" min=5 max=23>:<input type="number" name="vol_availability_time_from_minutes" id="vol_avaibility_time_from_minutes" min=0 max=59>
+
+		Time to
+		<input type="number" name="vol_availability_time_to_hours" id="vol_avaibility_time_to_hours" min=5 max=23>:<input type="number" name="vol_availability_time_to_minutes" id="vol_avaibility_time_to_minutes" min=0 max=59>
+		<input type="button" value="ADD" id="add">
+		<textarea id="vol_display" readonly></textarea> <input type="button" value="clear" id="clear" onclick="validate()">
+		<input type="hidden" name="vol_availability_obj" id="vol_availability_obj">
+		</div>
+
+
+	Update Resume
+	<input type="file" name="resume_file" id="resume_file">
+	<input type="hidden" name="old_file_name" id="old_file_name">
+	<input type="submit" name="submit">
+
+
+</form>
+</div>
+
+<script>
+$('#user_training,#user_event,#user_edu_relevant_course,#user_edu_achievement,#user_edu_extracuract,#workexp_achievements,#comm_skills,#comm_skills_learn,#pot_mat,#industry').tagsInput({
+  interactive: true,
+
+
+  placeholder: 'Add values',
+
+  width: 'auto',
+  height: 'auto',
+
+
+  hide: true,
+
+
+  delimiter: ',',
+
+  removeWithBackspace: true
+
+});
+
+$('#vol_skill').tagsInput({
+					'autocomplete': {
+						source: [
+							'math',
+							'chemistry',
+							'physics',
+							'english'
+						]
+					}
+				});
+
+</script>
+<script>
+
+
+//var data=JSON.parse(data);/*
+/*
+function validate(){
+
+var voltypes=[];
+var usercomm=[];
+
+$("input:checkbox[name=vol_types]:checked").each(function() {
+       voltypes.push(parseInt($(this).val()));
+	   alert(voltypes);
+  });
+
+  $('#vol_types_arr').val(JSON.stringify(voltypes));
+
+$("input:checkbox[name=user_community]:checked").each(function() {
+       usercomm.push($(this).val());
+	 alert(usercomm);
+  });
+  $('#user_community_arr').val(JSON.stringify(usercomm));
+
+  }
+
+*/
+var update_data= {{{ data }}};
+//alert(update_data.email);
+//email
+$('#user_email').val(update_data.email);
+var usertype_value=update_data.userType;
+//usertype
+$("input[name='user_Type'][value='"+ usertype_value +"']").attr('checked', true);
+//fname
+$('#user_fname').val(update_data.firstName);
+//lastname
+$('#user_lname').val(update_data.lastName);
+//mobile
+$('#user_mob').val(update_data.mobile);
+//gender
+var gender=update_data.gender;
+$("input[name='gender'][value='"+ gender +"']").attr('checked', true);
+//communities
+var community=update_data.communities;
+community.forEach(function(val){
+$("input[name='user_community'][value='"+ val +"']").attr('checked',true);
+});
+//state
+$('#state_location').val(update_data.State);
+$('#post_code').val(update_data.post_code);
+//initiatives
+var user_training=update_data.initiatives.trainings;
+$('#user_training').importTags(user_training.toString());
+var user_event=update_data.initiatives.events;
+$('#user_event').importTags(user_event.toString());
+//profile
+
+alert(update_data.profile.twitter);
+$('#user_fb_id').val(update_data.profile.facebook);
+
+$('#user_twit_id').val(update_data.profile.twitter);
+$('#lkn_id').val(update_data.profile.linkedin);
+$('#website').val(update_data.profile.website);
+//education
+
+$('#uni_name').val(update_data.profile.education[0].university_name);
+$('#mjr').val(update_data.profile.education[0].major);
+$('#class').val(update_data.profile.education[0].class);
+//alert(update_data.profile.education[0].extra_curriculars);
+$('#yoc').val(update_data.profile.education[0].year_of_completion);
+var relevant_course=update_data.profile.education[0].relevent_courses;
+$('#user_edu_relevant_course').importTags(relevant_course.toString());
+var edu_achievement=update_data.profile.education[0].achievements;
+$('#user_edu_achievement').importTags(edu_achievement.toString());
+var extracurricular_activity=update_data.profile.education[0].extra_curriculars;
+$('#user_edu_extracuract').importTags(extracurricular_activity.toString());
+//work experience
+$('#cname').val(update_data.profile.work_experience[0].company);
+$('#loc').val(update_data.profile.work_experience[0].location);
+var startdate=new Date(update_data.profile.work_experience[0].start_date)
+var yy=startdate.getFullYear();
+var mm=startdate.getMonth();
+var dd=startdate.getDate();
+if(dd<10)
+{
+dd='0'+dd;
+}
+if(mm<10)
+{
+mm='0'+mm;
+}
+var newstartdate=yy+"-"+mm+"-"+dd;
+$('#startdate').val(newstartdate);
+var enddate=new Date(update_data.profile.work_experience[0].end_date);
+var yy=enddate.getFullYear();
+var mm=enddate.getMonth();
+var dd=enddate.getDate();
+if(dd<10)
+{
+dd='0'+dd;
+}
+if(mm<10)
+{
+mm='0'+mm;
+}
+var newenddate=yy+"-"+mm+"-"+dd;
+$('#enddate').val(newenddate);
+
+
+
+$('#position').val(update_data.profile.work_experience[0].position);
+$('#sor').val(update_data.profile.work_experience[0].summary_of_responsibilities);
+$('#workexp_achievements').val(update_data.profile.work_experience[0].achievements);
+//curr emp stat
+
+var curr_emp_state=update_data.profile.current_employment_state;
+$("input[name='cur_emp_state'][value='"+ curr_emp_state +"']").attr('checked', true);
+//radio
+var industry=update_data.profile.industry;
+$('#industry').importTags(industry.toString());
+//community connect
+var skill=update_data.community_connect.skills;
+$('#comm_skills').importTags(skill.toString());
+var skill_learn=update_data.community_connect.skills_to_learn;
+$('#comm_skills_learn').importTags(skill_learn.toString());
+
+$('#about_you').val(update_data.community_connect.about_you);
+var potential_match=update_data.community_connect.potential_matches;
+$('#pot_mat').importTags(potential_match.toString());
+//volunteers
+var volunteer_skills=update_data.volunteers_skills;
+$('#vol_skill').importTags(volunteer_skills.toString());
+
+var volunteers_roles=update_data.volunteers_types;
+//alert(volunteers_roles);
+
+volunteers_roles.forEach((val)=>{
+	$("input[name='vol_types'][value='" + val + "']").attr('checked',true);
+});
+
+var oldfileurl=update_data.resume_url;
+if($('#resume_file').val().length){
+var len = oldfileurl.lastIndexOf('/');
+var blob_name = oldfileurl.substring(len + 1);
+$('#old_file_name').val(blob_name);
+}
+
+
+
+var list=[];
+var vol_availability=update_data.volunteers_availability;
+vol_availability.forEach((array_val)=>{
+
+var obj={day :array_val.day,
+		time_from :array_val.time_from,
+		time_to :array_val.time_to
+};
+list.push(obj);
+
+});
+var tempval='';
+list.forEach((item)=>{
+tempval=tempval + Object.values(item);
+$('#vol_display').val(tempval);
+});
+$('#add').click(function(){
+
+
+var days=$('#availability').val();
+var from_hours=$('#vol_avaibility_time_from_hours').val();
+var from_minutes=$('#vol_avaibility_time_from_minutes').val();
+var to_hours=$('#vol_avaibility_time_to_hours').val();
+var to_minutes=$('#vol_avaibility_time_to_minutes').val();
+var from=from_hours+"."+from_minutes;
+var to=to_hours+"."+to_minutes;
+var obj={day :days,
+		time_from :from,
+		time_to :to
+};
+list.push(obj);
+ var arrval=" ";
+list.forEach((item)=>{
+arrval=arrval + Object.values(item);
+//arrval=arrval + (item.day +" FROM "+item.days_from.replace(".", ":")+" TO "+item.dats_to.replace(".", ":")) ;
+$('#vol_display').val(arrval);
+});
+
+$('#vol_availability_obj').val(JSON.stringify(list));
+
+//$('vol_availability_obj').val(list);
+
+//alert(text);
+
+$('#Availability,#vol_avaibility_time_from_hours,#vol_avaibility_time_from_minutes,#vol_avaibility_time_to_hours,#vol_avaibility_time_to_minutes').val(null);
+});
+
+$('#clear').click(function(){
+list.pop();
+alert(list);
+var arrvalclear="";
+list.foreach((item)=>{
+arrvalclear=arrvalclear + Object.values(item);
+$('#vol_display').val(null);
+$('#vol_display').val(arrvalclear);
+});
+//$('#vol_display').val(null);
+
+});
+
+
+
+$('input[name="user_Type"]').change(function(){
+        if($('#user_Type1,#user_Type2,#user_Type3').is(":checked"))
+		{
+
+            //$("#user_edu_achievement,#workexp_achievements,#sor,#user_edu_extracuract,#community_connect").attr('disabled', true);
+			 $("#community_connect").hide();
+			 $("#volunteer").show();
+        }
+		else if($("#user_Type4").is(":checked")){
+
+			$("#community_connect").show();
+			$("#volunteer").hide();
+        }else{
+		}
+    });
+
+</script>
+<script src="js/profile_formvalidation.js"></script>
+
+</body>
+</html>

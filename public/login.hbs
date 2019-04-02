@@ -1,0 +1,113 @@
+ <html>
+
+<head>
+	<meta charset="utf-8" />
+	<title>Page Title</title>
+
+	<style>
+	#form {
+	border:3px solid #f1f1f1;
+	}
+
+	input[type=email],input[type=password]{
+	width:100%;
+	padding :12px 20px;
+	margin: 8px 1px;
+	display:inline-block;
+	border:1px solid #ccc;
+	box-sizing:border-box;
+	}
+
+	#container {
+	padding: 150px;
+	width:400px;
+	}
+
+	input[type=submit] {
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+
+  }
+  button {
+  background-color: #a21h50;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+
+body {
+  margin: 0;
+}
+
+
+#header {
+  background-color: #f1f1f1;
+  padding: 20px;
+  text-align: center;
+}
+
+
+#nav{
+  overflow: hidden;
+  background-color: #333;
+}
+
+
+#nav a {
+  float: right;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+
+#nav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+
+	</style>
+
+</head>
+
+<body>
+
+
+
+<div id="container">
+<div id="form">
+login
+<label>email<label>
+<input type="email" name="login_email" id="login_email">
+<label>password</label>
+<input type="password" name="login_password" id="login_password">
+<input type="submit" value="submit" onclick="SignIn()">
+</div>
+
+<!--<a href="googleSignIn">Google SignIn</a>  -->
+ <a href="passwdreset">forgot password</a> &nbsp <a href="signup">sign up</a><button onclick="googleSignIn()">googlesign</button>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/5.8.6/firebase.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="js/firebase_init.js"></script>
+<script src="js/signIn.js"></script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,84 @@
+html, body {background: #white; font-family: 'Lato', helvetica, arial, sans-serif; font-size: 16px; color: #222;}
+
+#main {
+	width: 100%;
+	max-width: 800px;
+	background: #f3f3f3;
+	margin: 30px auto;
+}
+
+#top {
+width:100%;
+background: #f3f3f3;
+border: 1px solid;
+margin-right: 10px;
+float: left;
+height: 8%;
+
+}
+
+#down {
+width:100%;
+background: #f3f3f3;
+border: 1px solid red;
+margin-right: 10px;
+float: left;
+height: 90%;
+position: relative;
+}
+
+
+#user_search {
+	padding-top: 17px;
+	padding-left: 10px;
+	float: left;
+ margin-right: 5px;
+}
+
+#mail_link a{
+	display: block;
+	    width: 130px;
+	    height: 25px;
+	    background: #4E9CAF;
+	    padding: 17px;
+	    text-align: center;
+			position: relative;
+	    border-radius: 5px;
+	    color: white;
+	    font-weight: bold;
+			float: right;
+			text-decoration: none;
+}
+input[type=radio]{
+	position:relative;
+	width: 20px;
+
+}
+#user_search button{
+	color:blue;
+	border-radius: 12px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+
+#user_list{
+width: 30%;
+height:100%;
+float: left;
+
+}
+#profile{
+	float: right;
+	height: 100%;
+	width: 70%;
+	border: 2px;
+
+}
+#user_list button{
+	width:90%;
+	color: green;
+	background-color: white;
+
+}

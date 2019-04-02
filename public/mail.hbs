@@ -1,0 +1,163 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<style>
+	body{
+		padding: 5%;
+	}
+#form{
+	font-family: sans-serif;
+	font-weight:bold;
+	border-radius: 5px;
+  background-color:  	#F0FFFF;
+	margin:50px;
+	width:70%;
+}
+input[type=submit] {
+  background-color: #49accc;
+	width: 15%;
+	height:10%;
+	float: 60px;
+	 margin-top: 10;
+	 margin-bottom: 10;
+}
+#radio {
+	margin-bottom: 10;
+	display: block;
+    height: 25px;
+    left: 20px;
+    position: relative;
+}
+input[type=text],[type=file], textarea {
+	width: 100%;
+ margin-top: 10px;
+ margin-bottom: 10px;
+ border: 1px solid #ccc;
+ border-radius: 4px;
+ resize: vertical;
+
+}
+#submit_button{
+	padding-left: 30%;
+}
+label #usertype{
+	padding-left: 10px;
+}
+
+	</style>
+</head>
+<body>
+
+	<div id="form">
+<form name="admin_sendmail" action="/admin_mail" method="post" enctype="multipart/form-data" onsubmit="return validate();">
+<h2 align="center" color="#F0FFFF">Send Mail</h2>
+<br>
+<label id="usertype"><h6>UserType</h6></label>
+<br>
+<div class="row">
+<label><input type="radio" name="usertype" id="usertype" value="student"><span>Student</span></label>
+<label><input type="radio" name="usertype" id="usertype" value="volunteer"><span>Volunteer</span></label>
+<label><input type="radio" name="usertype" id="usertype" value="everyone"><span>Everyone</span></label>
+</div>
+
+<div class="row">
+  <div class="input-field col s6">
+<label for="mail_subject">Subject</label>
+<input type="text" name="mail_subject" id="mail_subject" onblur="subject_valid()">
+<span class="helper-text" data-error="wrong" data-success="right"></span>
+</div></div>
+
+	<div class="row">
+	<div class="input-field col s12">
+	<label for="admin_message">message</label>
+<textarea id="admin_message" class="materialize-textarea" name="admin_message" width="300px">
+</textarea>
+</div></div>
+
+<div class = "row">
+<div class="file-field input-field">
+<div class="btn">
+<span>File to attach</span>
+<input type="file" >
+</div>
+<div class = "file-path-wrapper">
+<input class = "file-path validate" type="text" name="attachment_file" id="attachment_file">
+<br></div></div></div>
+<div id="submit_button">
+	<input type="submit" name="submit" value="submit"></div>
+</submit>
+</form>
+</div>
+
+<script>
+
+$('#textarea1').val('New Text');
+ M.textareaAutoResize($('#textarea1'))
+
+/*
+function subject_valid()
+{
+	var subject=$('#mail_subject').val();
+	var alphanum = /^[0-9a-zA-Z]+$/;
+	if(subject.length>0){
+
+	if(!subject.match(alphanum)){
+
+		$('.helper-text').val("enter alphabet or numeric for subject");
+		return false;
+	}
+}else{
+	alert("its empty")
+	return false;
+}
+
+	return true;
+}*/
+function validate()
+{
+
+	var subject=$('#mail_subject').val();
+	var alphanum = /^[0-9a-zA-Z]+$/;
+	if(subject.length>0){
+
+	if(!subject.match(alphanum)){
+		alert("enter alphabet or numeric for subject")
+		return false;
+	}
+}else{
+	alert("its empty")
+	return false;
+}
+	var message=$('#admin_message').val();
+	var htmltext =/^< ([a-z]+)([^<]+)*(?:>(.*)< /1>|s+/>)$/;
+	if(!message.match(htmltext)){
+		alert("not valid text")
+		return false;
+	}
+
+
+	if($('input[type=radio][name=usertype]:checked').length == 0)
+				{
+					 alert("Please select atleast one usertype");
+					 return false;
+				}
+
+	var file=$('#attachment_file').val();
+	if(file)
+	{
+	  var fileRegex = /([^s]+(?=.(pdf|txt)).2)/gm;
+	if(!fileRegex.test(file)){
+	  alert("file type invalid");
+	  return false;
+	}
+	}
+return true;
+}
+
+
+</script>
+
+</body>
+</html>

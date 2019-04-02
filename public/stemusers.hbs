@@ -1,0 +1,106 @@
+<link rel="stylesheet" type="text/css" href="css/allstemuser.css" />
+<div id="main">
+<div id="top">
+<div id="user_search">
+<label>Student</label><input type="radio" name="usertype" id="student"/ value="student">
+<label>Volunteers</label><input type="radio" name="usertype" id="volunteers"/ value="volunteer">
+<label>Others</label><input type="radio" name="usertype" id="others"/ value="other">
+
+<button onclick="search_user()">Search</button>
+</div>
+
+<div id="mail_link"><a href="mail">SENDS MAIL</a></div>
+</div>
+  <div id="down">
+    <div id="user_list"><div id='users'></div></div>
+    <div id="profile"><div id='profiledata'></div></div>
+</div>
+</div>
+<div id="poi"></div>
+
+
+
+
+
+
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="js/Profile_table.js"></script>
+<script>
+var buttons=''
+ var alluserdata={{{ data }}};
+alluserdata.forEach((each)=>{
+  var fname=each.firstName
+  var lname=each.lastName
+  var email=each.email
+  buttons +='<button onclick="users(\''+email+'\')">'+fname+' '+lname+'</button>';
+});
+buttons+='';
+document.getElementById('profiledata').innerHTML="profile to be displayed here";
+document.getElementById('users').innerHTML=buttons;
+function users(email){
+  var data;
+  alluserdata.forEach((each)=>{
+
+    if(each.email==email){
+      console.log("id is "+each._id);
+      console.log("data"+each);
+      var tabledata=userdata(each);
+      console.log(tabledata);
+      document.getElementById('profiledata').innerHTML=tabledata;
+
+    }
+
+  });
+}
+
+
+function search_user()
+{
+  console.log("user");
+var user_value= $('input[name=usertype]:checked').val();
+
+
+var button=''
+if(user_value=='student'){
+  alluserdata.forEach((each)=>{
+  if(each.userType==1){
+    var fname=each.firstName
+    var lname=each.lastName
+    var email=each.email
+    button +='<button onclick="users(\''+email+'\')">'+fname+' '+lname+'</button>';
+  }
+});
+}
+if(user_value=='volunteer'){
+  alluserdata.forEach((each)=>{
+  if((each.userType==4)||(each.userType==2)||(each.userType==3)){
+    var fname=each.firstName
+    var lname=each.lastName
+    var email=each.email
+    button +='<button onclick="users(\''+email+'\')">'+fname+' '+lname+'</button>';
+}
+});
+}
+if(user_value=='other'){
+  alluserdata.forEach((each)=>{
+  if((each.userType==0)||(each.userType==5)||(each.userType==6)){
+    var fname=each.firstName
+    var lname=each.lastName
+    var email=each.email
+    button +='<button onclick="users(\''+email+'\')">'+fname+' '+lname+'</button>';
+}
+});
+}
+button+=''
+console.log(button);
+if(button='')
+{
+  document.getElementById('users').innerHTML="no users";
+}else{
+  document.getElementById('users').innerHTML='';
+document.getElementById('users').innerHTML=button;
+}
+}
+
+</script>

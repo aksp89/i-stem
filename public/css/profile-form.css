@@ -1,0 +1,47 @@
+#form {
+border:3px solid #f1f1f1;
+}
+
+input[type=text],input[type=select],#user_mob,#vol_display{
+width:100%;
+padding :14px 20px;
+margin: 8px 3px;
+display:inline-block;
+border:1px solid #ccc;
+box-sizing:border-box;
+}
+input[type=radio]{
+  position:relative;
+	width: 15px;
+  margin: 8px 3px;
+display:inline-block;
+padding: 20px;
+}
+
+input[type=checkbox]{
+  position:relative;
+	width: 15px;
+  margin: 8px 3px;
+  display:inline-grid;
+}
+
+#container {
+padding: 150px;
+width:80%;
+}
+
+input[type=submit] {
+background-color: #4CAF50;
+color: white;
+padding: 14px 20px;
+margin: 8px 0;
+border: none;
+cursor: pointer;
+width: 100%;
+
+}
+#personal_info,#Initiative,#profile,#prof_education,#work_exp,#community_connect,#volunteer{
+  padding: 20px;
+  display: block;
+  border:2px solid #fcefca;
+}

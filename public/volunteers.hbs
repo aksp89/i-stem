@@ -1,0 +1,58 @@
+{{#if message}}
+<script>
+    alert("{{message}}");
+</script>
+{{/if}}
+<h2> Find Volunteers</h2>
+<form id='vol_form' name="volunteer_form" action="/findVolunteers" method="POST">
+<div>
+    <h3>Choose volunteer type</h3>
+    <select name="vol_type" required>
+<option value="1">Reader/Writer</option>
+<option value="2"> Sign Language Interpreter</option>
+<option value="3">Tutor</option>
+    </select>
+</div>
+<div>
+    <h3>Choose skills required</h3>
+<select name ="vol_skills[]" multiple>
+    <option value="physics">Physics</option>
+    <option value="chemistry">Chemistry</option>
+    <option value="biology">Biology</option>
+    <option value="math">Mathematics</option>
+    <option value="cs">Computer Science</option>
+    </select>
+</div>
+<div>
+    <h3>Purpose for which volunteer is required</h3>
+<input type="text" id='purpose' name = 'purpose' required>
+</div>
+<div>
+<h3>Date when volunteer is required</h3>
+<input type="date" name="date" id="date" required>
+</div>
+
+<div>
+<h3>Time when the volunteer is required</h3>
+<p>Please select time in 24 hour format </p>
+<p>Hours: <input type="number" min="5" max="23" name="hours" required</p>
+<p>Minutes: <input type="number" min="00" max="59" name="minutes" required></p>
+</div>
+<div>
+    <h3>Select  distance range of volunteer</h3>
+<p>Minimum value is 50 km and maximum is 150 km</p>
+<p>We will look for volunteers in this distance radius</p>
+<input type="number" min="50" max="150" name="distance_range" required>
+</div>
+<div>
+    <button type="submit" >Submit</button>
+</div>
+</form>
+
+<script>
+var msg = {{message}};
+if(msg){
+    alert(msg);
+}
+
+</script>

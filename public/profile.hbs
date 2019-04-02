@@ -1,0 +1,619 @@
+<html>
+<head>
+<title>Profile</title>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT" crossorigin="anonymous"></script>
+<script src="https://www.gstatic.com/firebasejs/5.6.0/firebase.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<link rel="stylesheet" href="css/profile-form.css">
+<script src="js/jquery.tagsinput-revisited.js"></script>
+<link rel="stylesheet" href="css/jquery.tagsinput-revisited.css">
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+<style>
+*{
+box-sizing: border-box;
+}
+
+
+
+.navbar {
+overflow: hidden;
+background-color: #333;
+font-family: Arial;
+}
+
+/* Links inside the navbar */
+.navbar a {
+float: left;
+font-size: 16px;
+color: white;
+text-align: center;
+padding: 14px 16px;
+text-decoration: none;
+}
+
+/* The dropdown container */
+.dropdown {
+float: left;
+overflow: hidden;
+}
+
+/* Dropdown button */
+.dropdown .dropbtn {
+font-size: 16px;
+border: none;
+outline: none;
+color: white;
+padding: 14px 16px;
+background-color: inherit;
+font-family: inherit; /* Important for vertical align on mobile phones */
+margin: 0; /* Important for vertical align on mobile phones */
+}
+
+/* Add a red background color to navbar links on hover */
+.navbar a:hover, .dropdown:hover .dropbtn {
+background-color: red;
+}
+
+/* Dropdown content (hidden by default) */
+.dropdown-content {
+display: none;
+position: absolute;
+background-color: #f9f9f9;
+min-width: 160px;
+box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+float: none;
+color: black;
+padding: 12px 16px;
+text-decoration: none;
+display: block;
+text-align: left;
+}
+
+/* Add a grey background color to dropdown links on hover */
+.dropdown-content a:hover {
+background-color: #ddd;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+display: block;
+}
+
+
+
+
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <a href="#">Home</a>
+    <a href="#">about</a>
+
+  	<div class="dropdown">
+  		<button class="dropbtn">Resources
+  			<i class="fa fa-caret-down"></i>
+  		</button>
+  		<div class="dropdown-content">
+  			<a href="math">math-pix</a>
+  	<a href="video">video indexer</a>
+  		<a href="volunteers">Find volunteers</a>
+  		</div></div>
+
+  		  <div id="login"></div>
+  	<div id="admin"></div>
+  	<div id="user"></div>
+
+  </div>
+
+
+<div id="container">
+<form class="col s12" name="profileform" id="profileform"  action="/user_profile" enctype="multipart/form-data" onsubmit="return formValidate()" method="POST">
+<div id="personal_info">
+
+<div class="row">
+
+UserType
+<br>
+<label for="user_Type4">
+<input type="radio" name="user_Type" id="user_Type4" value="1"><span>student with disability</span></label>
+<label>
+<input type="radio" name="user_Type" id="user_Type1" value="2"><span>volunteer student</span></label>
+<label>
+<input type="radio" name="user_Type" id="user_Type2" value="3"><span>volunteer professional</span></label>
+<label>
+<input type="radio" name="user_Type" id="user_Type3" value="4"><span>volunteer others</span></label>
+<label>
+<input type="radio" name="user_Type" id="user_Type5" value="5"><span>HR</span></label>
+<label>
+<input type="radio" name="user_Type" id="user_Type6" value="6"><span>Admin</span></label>
+<label>
+<input type="radio" name="user_Type" id="user_Type0" value="0"><span>other</span></label>
+
+</div>
+
+<div class="row">
+<div class="input-field col s6">
+<label for="user_email">email</label>
+<input type="email" name="user_email" id="user_email" onblur="validate_email()">
+<span class="helper-text"></span>
+</div>
+</div>
+<div class="row">
+<div class="input-field col s6">
+<label for="user_fname">First name</label>
+<input type="text" name="user_fname" id="user_fname">
+<span class="helper-text"></span>
+</div>
+<div class="input-field col s6">
+<label for="user_lname">Last name</label>
+<input type="text" name="user_lname" id="user_lname">
+<span class="helper-text"></span>
+</div>
+</div>
+<div class="row">
+  <div class="input-field col s6">
+  <label for="user_mob">Mobile</label>
+  <input type="text" name="user_mob" id="user_mob">
+  <span class="helper-text"></span>
+  </div>
+</div>
+<br>
+
+<div class="row">
+Gender
+
+<br>
+<label><input type="radio" name="gender" id="gender" value="M"><span>Male</span></label>
+<label><input type="radio" name="gender" id="gender" value="F"><span>Female</span></label>
+<label><input type="radio" name="gender" id="gender" value="O"><span>other</span></label>
+<br>
+<br>
+</div>
+
+<div class="row">
+Communities
+<br>
+
+<label><input type="checkbox" name="user_community" id="user_community" value="J"><span>Junior</span></label>
+<label><input type="checkbox" name="user_community" id="user_community" value="Y"><span>Youth</span></label>
+<label><input type="checkbox" name="user_community" id="user_community" value="M"><span>Mentor</span></label>
+<label><input type="checkbox" name="user_community" id="user_community" value="F"><span>Friends</span></label>
+<label><input type="checkbox" name="user_community" id="user_community" value="U"><span>Updates</span></label>
+<input type="hidden" name="user_community_arr" id="user_community_arr">
+</div>
+	<br>
+	<br>
+  <div class="row">
+  <div class="input-field col s6">
+	<label for="state_location">state</label>
+	<input type="text" name="state_location" id="state_location">
+  </div>
+  <div class="input-field col s6">
+  <label for="post_code">postal code</label>
+	<input type="text" name="post_code" id="post_code">
+</div>
+</div>
+</div>
+
+<div id="Initiative">
+<h2>Initiatives</h2>
+	<br>
+	trainings
+		<input type="text" name="user_training" id="user_training">
+
+	events
+		<input type="text" name="user_event" id="user_event">
+
+
+</div>
+
+<div id="profile">
+<h2>profile</h2>
+<br>
+<div class="row">
+<div class="input-field col s6">
+	<label for="user_fb_id">facebook</label>
+		<input type="text" name="user_fb_id" id="user_fb_id">
+  </div>
+
+<div class="input-field col s6">
+	<label for="user_twit_id">twitter</label>
+		<input type="text" name="user_twit_id" id="user_twit_id">
+  </div>
+</div>
+<div class="row">
+<div class="input-field col s6">
+	<label for="lkn_id">Linkedin</label>
+		<input type="text" name="lkn_id" id="lkn_id">
+  </div>
+  <div class="input-field col s6">
+  	<label for="website">Website</label>
+		<input type="text" name="website" id="website">
+  </div></div>
+</div>
+
+<div id="prof_education">
+<h2>education</h2>
+<br>
+<div class="row">
+<div class="input-field col s6">
+	<label for="uni_name">University Name</label>
+			<input type="text" name="uni_name" id="uni_name">
+    </div>
+  </div>
+  <div class="row">
+  <div class="input-field col s6">
+  	<label for="mjr">major</label>
+			<input type="text" name="mjr" id="mjr">
+    </div>
+    <div class="input-field col s6">
+    	<label for="class">class</label>
+			<input type="text" name="class" id="class">
+    </div>
+    <div class="input-field col s6">
+		<label for="yoc">year of completion</label>
+			<input type="number" name="yoc" id="yoc">
+    </div></div>
+    <div class="row">
+		<label for="user_edu_relevant_course">relevent_courses</label>
+		<input type="text" name="user_edu_relevant_course" id="user_edu_relevant_course">
+  </div>
+  <div class="row">
+
+	<label for="user_edu_achievement">achievement</label>
+	<input type="text" name="user_edu_achievement" id="user_edu_achievement">
+</div>
+<div class="row">
+
+		<label for="user_edu_extracuract">Extracurricular activity</label>
+			<input type="text" name="user_edu_extracuract" id="user_edu_extracuract">
+    </div>
+</div>
+<div id="work_exp">
+<h2>work experience</h2>
+<br>
+<div class="row">
+<div class="input-field col s6">
+		<label for="cname">Company</label>
+			<input type="text" name="cname" id="cname">
+    </div>
+    <div class="input-field col s6">
+		<label for="loc">Location</label>
+			<input type="text" name="loc" id="loc">
+    </div></div>
+    <div class="row">
+    <div class="input-field col s6">
+	<label for="startdate">Start Date</label>
+			<input type="date" name="startdate" id="startdate">
+    </div>
+        <div class="input-field col s6">
+	<label for="enddate">End date</label>
+			<input type="date" name="enddate" id="enddate">
+    </div></div>
+    <div class="row">
+    <div class="input-field col s6">
+	<label for="position">Position</label>
+			<input type="text" name="position" id="position">
+    </div>
+    <div class="input-field col s6">
+  <label for="position">Summary of Responsibility</label>
+			<input type="text" name="sor" id="sor">
+    </div></div>
+	Achievements
+			<input type="text" name="workexp_achievements" id="workexp_achievements">
+
+
+current employment state
+<br>
+	<label><input type="radio" name="cur_emp_state" id="cur_emp_state" value="E"><span>Employed</span></label>
+<label><input type="radio" name="cur_emp_state" id="cur_emp_state" value="S"><span>Seeking Employment</span></label>
+<label><input type="radio" name="cur_emp_state" id="cur_emp_state" value="ST"><span>Student</span></label>
+<label><input type="radio" name="cur_emp_state" id="cur_emp_state" value="R"><span>Retired</span></label>
+<br>
+industry
+	<input type="text" name="industry" id="industry">
+	</div>
+
+	<div id="community_connect">
+<h2>community_connect</h2>
+<br>
+	skills
+	<input type="text" name="comm_skills" id="comm_skills">
+	skills_to_learn
+	<input type="text" name="comm_skills_learn" id="comm_skills_learn">
+	about you
+	<input type="text" name="about_you" id="about_you">
+	potential_matches
+	<input type="text" name="pot_mat" id="pot_mat">
+	</div>
+
+	<div id="volunteer">
+		<h2>volunteers</h2>
+		<br>
+	volunteers skill
+	<input type="text" name="vol_skill" id="vol_skill">
+	volunteer types
+	<br>
+	<label><input type="checkbox" name="vol_types" id="vol_types" value="1"><span>Reader Writer</span></label>
+<label><input type="checkbox" name="vol_types" id="vol_types" value="2"><span>Sign Language Interpreter</span></label>
+<label><input type="checkbox" name="vol_types" id="vol_types" value="3"><span>Tutor</span></label>
+<input type="hidden" name="vol_types_arr" id="vol_types_arr">
+<br>
+	Availability
+	<br>
+  <div class="row">
+  <div class="input-field col s12">
+	<select name="volunteer_availability" id="availability">
+    <option value="" disabled selected>Choose your option</option>
+	<option value="monday">Monday</option>
+	<option value="tuesday">Tuesday</option>
+	<option value="wednesday">Wednesday</option>
+	<option value="thursday">Thursday</option>
+	<option value="friday">Friday</option>
+	<option value="saturday">Saturday</option>
+	<option value="sunday">Sunday</option>
+	</select><label>Days</label>
+</div>
+  <div class="input-field col s12">
+	<select name="vol_availability_time_from_hours" id="vol_availability_time_from_hours">
+    <option value="" disabled selected>select hours from</option>
+    <option value="5">5 am</option>
+  	<option value="6">6 am</option>
+  	<option value="7">7 am</option>
+  	<option value="8">8 am</option>
+  	<option value="9">9 am</option>
+  	<option value="10">10 am</option>
+  	<option value="11">11 am</option>
+    <option value="12">12 pm</option>
+    <option value="13">1 pm</option>
+    <option value="14">2 pm</option>
+    <option value="15">3 pm</option>
+    <option value="16">4 pm</option>
+    <option value="17">5 pm</option>
+    <option value="18">6 pm</option>
+    <option value="19">7 pm</option>
+    <option value="20">8 pm</option>
+  </select><label>Time from</label></div>
+
+
+  <div class="input-field col s12">
+	<select name="vol_availability_time_to_hours" id="vol_availability_time_to_hours">
+    <option value="" disabled selected>select hours to</option>
+    <option value="5">5 am</option>
+  	<option value="6">6 am</option>
+  	<option value="7">7 am</option>
+  	<option value="8">8 am</option>
+  	<option value="9">9 am</option>
+  	<option value="10">10 am</option>
+  	<option value="11">11 am</option>
+    <option value="12">12 pm</option>
+    <option value="13">1 pm</option>
+    <option value="14">2 pm</option>
+    <option value="15">3 pm</option>
+    <option value="16">4 pm</option>
+    <option value="17">5 pm</option>
+    <option value="18">6 pm</option>
+    <option value="19">7 pm</option>
+    <option value="20">8 pm</option>
+  </select><label>Time from</label></div></div>
+
+	<input type="button" value="ADD" id="add">
+	<textarea id="vol_display" readonly></textarea> <input type="button" value="clear" id="clear">
+
+	<input type="hidden" name="vol_availability_obj" id="vol_availability_obj">
+	</div>
+
+  <div class = "row">
+  <div class="file-field input-field">
+  <div class="btn">
+	<span>Resume</span>
+	<br>
+	<input type="file" >
+</div>
+<div class = "file-path-wrapper">
+   <input class = "file-path validate" name="resume_file" id="resume_file" placeholder = "Upload file" />
+                  </div>
+                </div></div>
+
+	<input type="submit" name="submit">
+
+
+</form>
+</div>
+
+<script>
+
+$('#user_training,#user_event,#user_edu_relevant_course,#vol_skill,#user_edu_achievement,#user_edu_extracuract,#workexp_achievements,#comm_skills,#comm_skills_learn,#pot_mat,#industry').tagsInput({
+  interactive: true,
+
+
+  placeholder: 'Add values',
+
+  width: 'auto',
+  height: 'auto',
+
+
+  hide: true,
+
+
+  delimiter: ',',
+
+  removeWithBackspace: true
+
+});
+
+</script>
+<script>
+
+
+
+$("document").ready(function(){
+
+$('select').formSelect();
+
+
+var list=[];
+
+$('#add').click(function(){
+
+
+var days=$('#availability').val();
+var from_hours=$('#vol_availability_time_from_hours').val();
+var to_hours=$('#vol_availability_time_to_hours').val();
+if(!days){
+  alert("days cannot be empty")
+  return
+}
+
+alert(from_hours)
+alert(to_hours)
+
+var obj={day :days,
+		time_from :parseInt(from_hours),
+		time_to :parseInt(to_hours)
+};
+list.push(obj);
+ var arrval="  ";
+list.forEach((item)=>{
+arrval=arrval + item.day+" "+item.time_from+" "+item.time_to+"\n"
+//arrval=arrval + (item.day +" FROM "+item.days_from.replace(".", ":")+" TO "+item.dats_to.replace(".", ":")) ;
+$('#vol_display').val(arrval);
+});
+
+$('#vol_availability_obj').val(JSON.stringify(list));
+
+//$('vol_availability_obj').val(list);
+
+//alert(text);
+
+$('#Availability,#vol_avaibility_time_from_hours,#vol_avaibility_time_from_minutes,#vol_avaibility_time_to_hours,#vol_avaibility_time_to_minutes').val(null);
+});
+
+$('#clear').click(function(){
+list.pop();
+alert(list);
+var arrvalclear="";
+$('#vol_display').val(null);
+list.forEach((item)=>{
+arrvalclear=arrvalclear + Object.values(item);
+
+$('#vol_display').val(arrvalclear);
+});
+//$('#vol_display').val(null);
+
+});
+
+
+
+$('input[name="user_Type"]').change(function(){
+        if($('#user_Type1,#user_Type2,#user_Type3').is(":checked"))
+		{
+
+            //$("#user_edu_achievement,#workexp_achievements,#sor,#user_edu_extracuract,#community_connect").attr('disabled', true);
+			 $("#community_connect").hide();
+			 $("#volunteer").show();
+        }
+		else if($("#user_Type4").is(":checked")){
+
+			$("#community_connect").show();
+			$("#volunteer").hide();
+        }else{
+		}
+    });
+
+	});
+  /*
+ var postData = { "email": user_email ,"userType": usertype,"firstName":user_fname,"lastName": user_lname,"mobile": user_mob,"gender": gender,"communities": [community ],"volunteers_skills": [vol_skill],"volunteers_roles": [vol_roles],"volunteers_availability": [{vol_availability_obj}],"initiatives": {"trainings": [user_training],"events": [user_event]},"profile": {"facebook": user_facebook,"twitter": user_twitter,"linkedin": user_linkedin,"website": user_website,"current_location": curr_loc,"education": [{"university_name": uni_name,"major": major,"class": uni_class,"year_of_completion": year_of_completion,"relevent_courses": [relevant_course],"achievements": [edu_achievement],"extra_curriculars": [extracurr_activity]}],"work_experience": [{"company": company_name,"location": company_loc,"start_date": start_date,"end_date": end_date,"position": position,"summary_of_responsibilities": summary_of_responsibility,"achievements": [work_achievements]}],"current_employment_state": current_emp_state,"industry": [industry],"community_connect": {"skills": [skills],"skills_to_learn": [skills_to_learn],"about_you": about_you,"potential_matches": [potential_matches]}} };
+var newdata=JSON.stringify(postData);
+	$.post('/user_profile',{ newdata : newdata },function(data,status,xhr)
+						{
+
+						 alert('status: ' + status + ', data: ' + data.responseData);
+						},'json');
+//			}
+
+
+
+
+
+
+/*
+$('document').ready(function(){
+
+var type=$('#user_Type').val();
+var usertype;
+switch(type)
+{
+case "other":
+usertype=0;
+break;
+
+case "stud_with_disability":
+usertype=1;
+break;
+
+case "vol_student"
+usertype=2;
+break;
+
+case "vol_professional"
+usertype=3;
+break;
+
+case "vol_other"
+usertype=4;
+break;
+
+case "hr"
+usertype=5;
+break;
+case "admin"
+usertype=6;
+break;
+}
+
+
+});
+
+
+var user_email=$('#user_email').val();
+var user_fname=$('#user_fname').val();
+var user_lname=$('#user_lname').val();
+var user_mob=$('#user_mob').val();
+var gender=$('#gender').val();
+var community=$('#user_community').val();
+var user_training=$('#user_training').val();
+var user_event=$('#user_event').val();
+var user_facebook=$('#user_fb_id').val();
+var user_twitter=$('#user_twit_id').val();
+var user_linkedin=$('#lkn_id').val();
+var user_website=$('#website').val();
+var curr_loc=$('#cur_loc').val();
+var uni_name=$('#uni_name').val();
+var settings = {
+  "url": "{{localhost}}/user/addUserInfo",
+  "method": "POST",
+  "timeout": 0,
+  "headers": {
+    "Content-Type": "application/json",
+    "idtoken": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjIzNTBiNWY2NDM0Zjc2Y2NiM2IxMTlmZGQ4OGQxMzhjOWFjNTVmY2UiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vaXN0ZW0tdGVzdGluZyIsIm5hbWUiOiJTYWdhciBSYWphayIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vLXBJeF9Vd3NFNC1VL0FBQUFBQUFBQUFJL0FBQUFBQUFBQUFBL0FHRGd3LWpJX3Mzc0Q0NlhIdllfNEdkN0czNHFnVkVWNXcvbW8vcGhvdG8uanBnIiwiYXVkIjoiaXN0ZW0tdGVzdGluZyIsImF1dGhfdGltZSI6MTU0MzgyNDQwNCwidXNlcl9pZCI6Ink1QXk3VTY3UnNScTFPdkJjczB3SGVMV2lxWjIiLCJzdWIiOiJ5NUF5N1U2N1JzUnExT3ZCY3Mwd0hlTFdpcVoyIiwiaWF0IjoxNTQzODI0NDA2LCJleHAiOjE1NDM4MjgwMDYsImVtYWlsIjoic2FnYXIucmFqYWtAZ3N0ZWRnZS5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjExODQwMzE5MDQ3MDAxNjk3NjMxNSJdLCJlbWFpbCI6WyJzYWdhci5yYWpha0Bnc3RlZGdlLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6Imdvb2dsZS5jb20ifX0.Nle9bQVpHiaefXNeg73-Y_ZJ5kYgNXi6oGIWhOk20LJEl4G-HIA-W118puJgK4YhejxIsXSm5_1eoFFEdkhusCO1TEPIJOFiyE_WC6frLO8Gj1NSndZdD124xeYEqEnnop4ky-9errhFYz6f9duhAxPO6F2AAO6haL3oY2rmSpcw77AHMbf1GPdPUtk3pHZkk1MsGxCdknMStQP8tgYMrxoO3NHylnLMwnmPlO62TrGNVSaYGxEIMLsnnnKDq9l97suPBGPfC6PAhGk4PwL6aT1OXv8_7-u6iq7rGE65UfYi4lnQgXMPDz6i3WromYatZCnUQTwrKEIDrcmPWXLQDw"
+  },
+  "data": "{"email": "test@gmail.com","userType": 5,"firstName": "Robin","lastName": "Gaur","mobile": "6465464546","gender": "M","communities": ["J", "M"],"initiatives": { "trainings": ["training01", "training"], "events\": ["event01"]},"profile": {"facebook": "
+  ","twitter": "dldkl","linkedin": "linkedin","website": "","current_location": "","education": [{"university_name": "","major": "","class": "","year_of_completion": 12,"relevent_courses": ["ada", "Sadas"],"achievements": ["achievements", "achievements", "achievements"],"extra_curriculars": []}],"work_experience": [{"company": "","location": " ","start_date": "12/02/2018","end_date": "","position": "","summary_of_responsibilities": "","achievements": ["achievements"]}],"current_employment_state": "ST","industry": ["industry", "industry"],"community_connect": {"skills": ["skills", "skills"],"skills_to_learn": ["skills_to_learn"],"about_you": "about_you about_you about_you","potential_matches": ["potential_matches", "potential_matches"]}}}",
+};
+$.ajax(settings).done(function (response) {
+  console.log(response);
+});
+*/
+</script>
+<script type="text/javascript" src="js/auth.js"></script>
+<script src="js/profile_formvalidation.js"></script>
+
+</body>
+</html>
