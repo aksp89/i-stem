@@ -6,7 +6,7 @@ const { document } = (new JSDOM('')).window;
 global.document = document;
 var $ = jQuery = require('jquery')(window);
 
-async function getUserInfo(token){	
+async function getUserInfo(token){
 var result=await $.ajax({
 	"url": "https://cors-anywhere.herokuapp.com/https://i-stem-app-v1.azurewebsites.net/user/getUserInfo",
 
@@ -16,6 +16,7 @@ var result=await $.ajax({
 	"type": "GET",
 	"data":""
     });
+		console.log("here our result is"+JSON.stringify(result));
 		return result;
 
   console.log("result is"+result);
@@ -34,6 +35,7 @@ async function getAllUserInfo(token){
 	"type": "GET",
 	"data":""
     });
+		console.log(result);
 		return result;
 }
 

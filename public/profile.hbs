@@ -2,11 +2,16 @@
 <head>
 <title>Profile</title>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+			  integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
+			  crossorigin="anonymous"></script>
 <script src="https://www.gstatic.com/firebasejs/5.6.0/firebase.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-<link rel="stylesheet" href="css/profile-form.css">
 <script src="js/jquery.tagsinput-revisited.js"></script>
+
+<link rel="stylesheet" href="css/profile-form.css">
 <link rel="stylesheet" href="css/jquery.tagsinput-revisited.css">
+
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
 <style>
@@ -113,8 +118,8 @@ display: block;
 
 
 <div id="container">
-<form class="col s12" name="profileform" id="profileform"  action="/user_profile" enctype="multipart/form-data" onsubmit="return formValidate()" method="POST">
-<div id="personal_info">
+<form class="col s12" name="profileform" id="profileform" action="/user_profile" enctype="multipart/form-data" method="POST">
+<div id="usertype">
 
 <div class="row">
 
@@ -134,50 +139,51 @@ UserType
 <input type="radio" name="user_Type" id="user_Type6" value="6"><span>Admin</span></label>
 <label>
 <input type="radio" name="user_Type" id="user_Type0" value="0"><span>other</span></label>
-
+<span class="helper-usertype"></span>
 </div>
-
+</div>
+<div id="personal_info">
 <div class="row">
 <div class="input-field col s6">
-<label for="user_email">email</label>
-<input type="email" name="user_email" id="user_email" onblur="validate_email()">
+<label for="user_email">email (required)</label>
+<input type="email" name="user_email" id="user_email" onfocusout="validateEmail()" >
 <span class="helper-text"></span>
 </div>
 </div>
 <div class="row">
 <div class="input-field col s6">
-<label for="user_fname">First name</label>
-<input type="text" name="user_fname" id="user_fname">
+<label for="user_fname">First name (required)</label>
+<input type="text" name="user_fname" id="user_fname" onfocusout="validateFirstName()">
 <span class="helper-text"></span>
 </div>
 <div class="input-field col s6">
-<label for="user_lname">Last name</label>
-<input type="text" name="user_lname" id="user_lname">
+<label for="user_lname">Last name (required)</label>
+<input type="text" name="user_lname" id="user_lname" onfocusout="validateLastName()">
 <span class="helper-text"></span>
 </div>
 </div>
 <div class="row">
   <div class="input-field col s6">
-  <label for="user_mob">Mobile</label>
-  <input type="text" name="user_mob" id="user_mob">
+  <label for="user_mob">Mobile (required)</label>
+  <input type="text" name="user_mob" id="user_mob" onfocusout="validateMobNo()">
   <span class="helper-text"></span>
   </div>
 </div>
 <br>
 
 <div class="row">
-Gender
-
+<label>Gender (required)</label>
 <br>
 <label><input type="radio" name="gender" id="gender" value="M"><span>Male</span></label>
 <label><input type="radio" name="gender" id="gender" value="F"><span>Female</span></label>
 <label><input type="radio" name="gender" id="gender" value="O"><span>other</span></label>
+<span class="gender-message"></span>
 <br>
 <br>
 </div>
 
 <div class="row">
-Communities
+<label>Communities (required)</label>
 <br>
 
 <label><input type="checkbox" name="user_community" id="user_community" value="J"><span>Junior</span></label>
@@ -186,17 +192,58 @@ Communities
 <label><input type="checkbox" name="user_community" id="user_community" value="F"><span>Friends</span></label>
 <label><input type="checkbox" name="user_community" id="user_community" value="U"><span>Updates</span></label>
 <input type="hidden" name="user_community_arr" id="user_community_arr">
+<span class="helper-community"></span>
 </div>
 	<br>
 	<br>
   <div class="row">
   <div class="input-field col s6">
-	<label for="state_location">state</label>
-	<input type="text" name="state_location" id="state_location">
-  </div>
+	<label for="state_location">state (required)</label>
+
+<select name="state_location" id="state_location" onchange="validateState()">
+<option value="">Select State</option>
+<option value="andaman and nicobar islands">Andaman and Nicobar Islands</option>
+<option value="andhra pradesh">Andhra Pradesh</option>
+<option value="arunachal Pradesh">Arunachal Pradesh</option>
+<option value="assam">Assam</option>
+<option value="bihar">Bihar</option>
+<option value="chandigarh">Chandigarh</option>
+<option value="chhattisgarh">Chhattisgarh</option>
+<option value="dadra and nagar haveli">Dadra and Nagar Haveli</option>
+<option value="daman and diu">Daman and Diu</option>
+<option value="delhi">Delhi</option>
+<option value="goa">Goa</option>
+<option value="gujarat">Gujarat</option>
+<option value="haryana">Haryana</option>
+<option value="himachal pradesh">Himachal Pradesh</option>
+<option value="jammu and kashmir">Jammu and Kashmir</option>
+<option value="jharkhand">Jharkhand</option>
+<option value="karnataka">Karnataka</option>
+<option value="kerala">Kerala</option>
+<option value="lakshadweep">Lakshadweep</option>
+<option value="madhya pradesh">Madhya Pradesh</option>
+<option value="maharashtra">Maharashtra</option>
+<option value="manipur">Manipur</option>
+<option value="meghalaya">Meghalaya</option>
+<option value="mizoram">Mizoram</option>
+<option value="nagaland">Nagaland</option>
+<option value="orissa">Orissa</option>
+<option value="pondicherry">Pondicherry</option>
+<option value="punjab">Punjab</option>
+<option value="rajasthan">Rajasthan</option>
+<option value="sikkim">Sikkim</option>
+<option value="tamil nadu">Tamil Nadu</option>
+<option value="tripura">Tripura</option>
+<option value="uttaranchal">Uttaranchal</option>
+<option value="uttar pradesh">Uttar Pradesh</option>
+<option value="west bengal">West Bengal</option></select>
+<span class="state-message"></span>
+</div>
+
   <div class="input-field col s6">
-  <label for="post_code">postal code</label>
-	<input type="text" name="post_code" id="post_code">
+  <label for="post_code">postal code (required)</label>
+	<input type="text" name="post_code" id="post_code" onfocusout="validatePostal()">
+  <span class="helper-text"></span>
 </div>
 </div>
 </div>
@@ -204,12 +251,14 @@ Communities
 <div id="Initiative">
 <h2>Initiatives</h2>
 	<br>
-	trainings
-		<input type="text" name="user_training" id="user_training">
 
-	events
+    <label for="user_training">Training</label>
+		<input type="hidden" name="user_training" id="user_training">
+    <span class="helper-text"></span>
+
+	  <label for="user_training">events</label>
 		<input type="text" name="user_event" id="user_event">
-
+    <span class="helper-text"></span>
 
 </div>
 
@@ -219,22 +268,26 @@ Communities
 <div class="row">
 <div class="input-field col s6">
 	<label for="user_fb_id">facebook</label>
-		<input type="text" name="user_fb_id" id="user_fb_id">
+		<input type="text" name="user_fb_id" id="user_fb_id" onfocusout="facebook_id()">
+    <span class="helper-text"></span>
   </div>
 
 <div class="input-field col s6">
 	<label for="user_twit_id">twitter</label>
-		<input type="text" name="user_twit_id" id="user_twit_id">
+		<input type="text" name="user_twit_id" id="user_twit_id" onfocusout="twitter_id()">
+    <span class="helper-text"></span>
   </div>
 </div>
 <div class="row">
 <div class="input-field col s6">
 	<label for="lkn_id">Linkedin</label>
-		<input type="text" name="lkn_id" id="lkn_id">
+		<input type="text" name="lkn_id" id="lkn_id" onfocusout="linkedin_id()">
+    <span class="helper-text"></span>
   </div>
   <div class="input-field col s6">
   	<label for="website">Website</label>
-		<input type="text" name="website" id="website">
+		<input type="text" name="website" id="website" onfocusout="websites()">
+    <span class="helper-text"></span>
   </div></div>
 </div>
 
@@ -244,35 +297,42 @@ Communities
 <div class="row">
 <div class="input-field col s6">
 	<label for="uni_name">University Name</label>
-			<input type="text" name="uni_name" id="uni_name">
+			<input type="text" name="uni_name" id="uni_name" onfocusout="university()">
+      <span class="helper-text"></span>
     </div>
   </div>
   <div class="row">
   <div class="input-field col s6">
   	<label for="mjr">major</label>
-			<input type="text" name="mjr" id="mjr">
+			<input type="text" name="mjr" id="mjr" onfocusout="uni_major()">
+      <span class="helper-text"></span>
     </div>
     <div class="input-field col s6">
     	<label for="class">class</label>
-			<input type="text" name="class" id="class">
+			<input type="text" name="class" id="class" onfocusout="uni_class()">
+      <span class="helper-text"></span>
     </div>
     <div class="input-field col s6">
 		<label for="yoc">year of completion</label>
-			<input type="number" name="yoc" id="yoc">
+			<input type="number" name="yoc" id="yoc" onfocusout="yearofcompletion()">
+      <span class="helper-text"></span>
     </div></div>
     <div class="row">
 		<label for="user_edu_relevant_course">relevent_courses</label>
 		<input type="text" name="user_edu_relevant_course" id="user_edu_relevant_course">
+    <span class="helper-text"></span>
   </div>
   <div class="row">
 
 	<label for="user_edu_achievement">achievement</label>
 	<input type="text" name="user_edu_achievement" id="user_edu_achievement">
+  <span class="helper-text"></span>
 </div>
 <div class="row">
 
 		<label for="user_edu_extracuract">Extracurricular activity</label>
 			<input type="text" name="user_edu_extracuract" id="user_edu_extracuract">
+      <span class="helper-text"></span>
     </div>
 </div>
 <div id="work_exp">
@@ -281,33 +341,39 @@ Communities
 <div class="row">
 <div class="input-field col s6">
 		<label for="cname">Company</label>
-			<input type="text" name="cname" id="cname">
+			<input type="text" name="cname" id="cname" onfocusout="work_company()">
+      <span class="helper-text"></span>
     </div>
     <div class="input-field col s6">
 		<label for="loc">Location</label>
-			<input type="text" name="loc" id="loc">
+			<input type="text" name="loc" id="loc" onfocusout="work_location()">
+      <span class="helper-text"></span>
     </div></div>
     <div class="row">
     <div class="input-field col s6">
 	<label for="startdate">Start Date</label>
-			<input type="date" name="startdate" id="startdate">
+			<input type="date" name="startdate" id="startdate" onfocusout="work_start_date()">
+      <span class="helper-text"></span>
     </div>
         <div class="input-field col s6">
 	<label for="enddate">End date</label>
-			<input type="date" name="enddate" id="enddate">
+			<input type="date" name="enddate" id="enddate" onfocusout="work_end_date()">
+      <span class="helper-enddate"></span>
     </div></div>
     <div class="row">
     <div class="input-field col s6">
 	<label for="position">Position</label>
-			<input type="text" name="position" id="position">
+			<input type="text" name="position" id="position" onfocusout="work_position()">
+      <span class="helper-text"></span>
     </div>
     <div class="input-field col s6">
   <label for="position">Summary of Responsibility</label>
-			<input type="text" name="sor" id="sor">
+			<input type="text" name="sor" id="sor" onfocusout="summary_of_responsibility()">
+      <span class="helper-text"></span>
     </div></div>
 	Achievements
 			<input type="text" name="workexp_achievements" id="workexp_achievements">
-
+      <span class="helper-text"></span>
 
 current employment state
 <br>
@@ -315,37 +381,51 @@ current employment state
 <label><input type="radio" name="cur_emp_state" id="cur_emp_state" value="S"><span>Seeking Employment</span></label>
 <label><input type="radio" name="cur_emp_state" id="cur_emp_state" value="ST"><span>Student</span></label>
 <label><input type="radio" name="cur_emp_state" id="cur_emp_state" value="R"><span>Retired</span></label>
+<span class="helper-text"></span>
 <br>
 industry
 	<input type="text" name="industry" id="industry">
-	</div>
+  <span class="helper-text"></span>
+  </div>
 
 	<div id="community_connect">
 <h2>community_connect</h2>
 <br>
 	skills
 	<input type="text" name="comm_skills" id="comm_skills">
+  <span class="helper-text"></span>
 	skills_to_learn
 	<input type="text" name="comm_skills_learn" id="comm_skills_learn">
+  <span class="helper-text"></span>
 	about you
-	<input type="text" name="about_you" id="about_you">
+	<input type="text" name="about_you" id="about_you" onfocusout="aboutYou">
+  <span class="helper-text"></span>
 	potential_matches
 	<input type="text" name="pot_mat" id="pot_mat">
+  <span class="helper-text"></span>
 	</div>
 
 	<div id="volunteer">
 		<h2>volunteers</h2>
 		<br>
-	volunteers skill
-	<input type="text" name="vol_skill" id="vol_skill">
-	volunteer types
+    <div class="input-field col s12">
+	<label>volunteers skill (required)<label>
+	<select name="vol_skill" id="vol_skill" multiple>
+    <option value="math">Math</option>
+    <option value="physics">physics</option>
+    <option value="chemistry">chemistry</option></select>
+  </div>
+  <span class="skills-type"></span>
+
+	<label>volunteer types (required) </label>
 	<br>
 	<label><input type="checkbox" name="vol_types" id="vol_types" value="1"><span>Reader Writer</span></label>
 <label><input type="checkbox" name="vol_types" id="vol_types" value="2"><span>Sign Language Interpreter</span></label>
 <label><input type="checkbox" name="vol_types" id="vol_types" value="3"><span>Tutor</span></label>
 <input type="hidden" name="vol_types_arr" id="vol_types_arr">
+<span class="helper-text"></span>
 <br>
-	Availability
+	<label> Availability (required) </label>
 	<br>
   <div class="row">
   <div class="input-field col s12">
@@ -358,7 +438,9 @@ industry
 	<option value="friday">Friday</option>
 	<option value="saturday">Saturday</option>
 	<option value="sunday">Sunday</option>
-	</select><label>Days</label>
+	</select>
+  <span class="helper-days"></span>
+  <label>Days</label>
 </div>
   <div class="input-field col s12">
 	<select name="vol_availability_time_from_hours" id="vol_availability_time_from_hours">
@@ -379,7 +461,9 @@ industry
     <option value="18">6 pm</option>
     <option value="19">7 pm</option>
     <option value="20">8 pm</option>
-  </select><label>Time from</label></div>
+  </select><label>Time from</label>
+  <span class="helper-timefrom"></span>
+</div>
 
 
   <div class="input-field col s12">
@@ -401,7 +485,9 @@ industry
     <option value="18">6 pm</option>
     <option value="19">7 pm</option>
     <option value="20">8 pm</option>
-  </select><label>Time from</label></div></div>
+  </select><label>Time from</label>
+  <span class="helper-timeto"></span>
+</div></div>
 
 	<input type="button" value="ADD" id="add">
 	<textarea id="vol_display" readonly></textarea> <input type="button" value="clear" id="clear">
@@ -417,11 +503,12 @@ industry
 	<input type="file" >
 </div>
 <div class = "file-path-wrapper">
-   <input class = "file-path validate" name="resume_file" id="resume_file" placeholder = "Upload file" />
+   <input class = "file-path validate" name="resume_file" id="resume_file" placeholder = "Upload file" onfocusout="fileExtension()">
+   <span class="helper-file"></span>
                   </div>
                 </div></div>
 
-	<input type="submit" name="submit">
+	<input type="submit" name="submit" value="submit">
 
 
 </form>
@@ -429,25 +516,19 @@ industry
 
 <script>
 
-$('#user_training,#user_event,#user_edu_relevant_course,#vol_skill,#user_edu_achievement,#user_edu_extracuract,#workexp_achievements,#comm_skills,#comm_skills_learn,#pot_mat,#industry').tagsInput({
+var regex=/^[a-zA-Z]+$/;
+
+$('#user_training,#user_event,#user_edu_relevant_course,#user_edu_achievement,#user_edu_extracuract,#workexp_achievements,#comm_skills,#comm_skills_learn,#pot_mat,#industry').tagsInput({
+
   interactive: true,
-
-
   placeholder: 'Add values',
-
+  validationPattern:regex,
   width: 'auto',
   height: 'auto',
-
-
   hide: true,
-
-
   delimiter: ',',
-
   removeWithBackspace: true
-
 });
-
 </script>
 <script>
 
@@ -455,13 +536,29 @@ $('#user_training,#user_event,#user_edu_relevant_course,#vol_skill,#user_edu_ach
 
 $("document").ready(function(){
 
+
+
+	$('form').submit(function () {
+  if ($(document.activeElement).attr('type') == 'submit')
+     return true;
+  else return false;
+});
+
+
+
+	var voltypes=[];
+	var usercomm=[];
+
+	$("input:checkbox[name=vol_types]:checked").each(function() {
+				 voltypes.push(parseInt($(this).val()));
+			// alert(voltypes);
+		});
+		var newval=$('#vol_types_arr').val(voltypes);
 $('select').formSelect();
-
-
 var list=[];
 
 $('#add').click(function(){
-
+$('#user_training,#user_event,#user_edu_relevant_course').importTags("")
 
 var days=$('#availability').val();
 var from_hours=$('#vol_availability_time_from_hours').val();
@@ -471,14 +568,29 @@ if(!days){
   return
 }
 
-alert(from_hours)
-alert(to_hours)
-
 var obj={day :days,
 		time_from :parseInt(from_hours),
 		time_to :parseInt(to_hours)
 };
-list.push(obj);
+
+
+if(list.length>0){
+	var ispushed=false;
+	list.forEach((item)=>{
+		if((item.day==obj.day)&&(item.time_from==obj.time_from))
+		{
+			alert('schedule already exist')
+			ispushed=true;
+		}
+
+	});
+	if(ispushed==false){
+	list.push(obj);
+}
+}else {
+	list.push(obj);
+}
+
  var arrval="  ";
 list.forEach((item)=>{
 arrval=arrval + item.day+" "+item.time_from+" "+item.time_to+"\n"
@@ -492,7 +604,7 @@ $('#vol_availability_obj').val(JSON.stringify(list));
 
 //alert(text);
 
-$('#Availability,#vol_avaibility_time_from_hours,#vol_avaibility_time_from_minutes,#vol_avaibility_time_to_hours,#vol_avaibility_time_to_minutes').val(null);
+$('#Availability,#vol_avaibility_time_from_hours,#vol_avaibility_time_to_hours').val("");
 });
 
 $('#clear').click(function(){
@@ -510,110 +622,32 @@ $('#vol_display').val(arrvalclear);
 });
 
 
-
+$("#community_connect,#personal_info,#Initiative,#profile,#prof_education,#work_exp,#volunteer").hide();
 $('input[name="user_Type"]').change(function(){
         if($('#user_Type1,#user_Type2,#user_Type3').is(":checked"))
 		{
 
+			$('#profileform')[0].reset();
             //$("#user_edu_achievement,#workexp_achievements,#sor,#user_edu_extracuract,#community_connect").attr('disabled', true);
-			 $("#community_connect").hide();
-			 $("#volunteer").show();
+		//	 $("#community_connect").hide();$('.tagsinput#tags').removeTag('bar')
+
+			 $("#volunteer,#personal_info,#Initiative,#profile,#prof_education,#work_exp").show();
         }
 		else if($("#user_Type4").is(":checked")){
 
-			$("#community_connect").show();
+			$("#community_connect,#personal_info,#Initiative,#profile,#prof_education,#work_exp").show();
 			$("#volunteer").hide();
+
         }else{
 		}
     });
 
 	});
-  /*
- var postData = { "email": user_email ,"userType": usertype,"firstName":user_fname,"lastName": user_lname,"mobile": user_mob,"gender": gender,"communities": [community ],"volunteers_skills": [vol_skill],"volunteers_roles": [vol_roles],"volunteers_availability": [{vol_availability_obj}],"initiatives": {"trainings": [user_training],"events": [user_event]},"profile": {"facebook": user_facebook,"twitter": user_twitter,"linkedin": user_linkedin,"website": user_website,"current_location": curr_loc,"education": [{"university_name": uni_name,"major": major,"class": uni_class,"year_of_completion": year_of_completion,"relevent_courses": [relevant_course],"achievements": [edu_achievement],"extra_curriculars": [extracurr_activity]}],"work_experience": [{"company": company_name,"location": company_loc,"start_date": start_date,"end_date": end_date,"position": position,"summary_of_responsibilities": summary_of_responsibility,"achievements": [work_achievements]}],"current_employment_state": current_emp_state,"industry": [industry],"community_connect": {"skills": [skills],"skills_to_learn": [skills_to_learn],"about_you": about_you,"potential_matches": [potential_matches]}} };
-var newdata=JSON.stringify(postData);
-	$.post('/user_profile',{ newdata : newdata },function(data,status,xhr)
-						{
 
-						 alert('status: ' + status + ', data: ' + data.responseData);
-						},'json');
-//			}
-
-
-
-
-
-
-/*
-$('document').ready(function(){
-
-var type=$('#user_Type').val();
-var usertype;
-switch(type)
-{
-case "other":
-usertype=0;
-break;
-
-case "stud_with_disability":
-usertype=1;
-break;
-
-case "vol_student"
-usertype=2;
-break;
-
-case "vol_professional"
-usertype=3;
-break;
-
-case "vol_other"
-usertype=4;
-break;
-
-case "hr"
-usertype=5;
-break;
-case "admin"
-usertype=6;
-break;
-}
-
-
-});
-
-
-var user_email=$('#user_email').val();
-var user_fname=$('#user_fname').val();
-var user_lname=$('#user_lname').val();
-var user_mob=$('#user_mob').val();
-var gender=$('#gender').val();
-var community=$('#user_community').val();
-var user_training=$('#user_training').val();
-var user_event=$('#user_event').val();
-var user_facebook=$('#user_fb_id').val();
-var user_twitter=$('#user_twit_id').val();
-var user_linkedin=$('#lkn_id').val();
-var user_website=$('#website').val();
-var curr_loc=$('#cur_loc').val();
-var uni_name=$('#uni_name').val();
-var settings = {
-  "url": "{{localhost}}/user/addUserInfo",
-  "method": "POST",
-  "timeout": 0,
-  "headers": {
-    "Content-Type": "application/json",
-    "idtoken": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjIzNTBiNWY2NDM0Zjc2Y2NiM2IxMTlmZGQ4OGQxMzhjOWFjNTVmY2UiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vaXN0ZW0tdGVzdGluZyIsIm5hbWUiOiJTYWdhciBSYWphayIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vLXBJeF9Vd3NFNC1VL0FBQUFBQUFBQUFJL0FBQUFBQUFBQUFBL0FHRGd3LWpJX3Mzc0Q0NlhIdllfNEdkN0czNHFnVkVWNXcvbW8vcGhvdG8uanBnIiwiYXVkIjoiaXN0ZW0tdGVzdGluZyIsImF1dGhfdGltZSI6MTU0MzgyNDQwNCwidXNlcl9pZCI6Ink1QXk3VTY3UnNScTFPdkJjczB3SGVMV2lxWjIiLCJzdWIiOiJ5NUF5N1U2N1JzUnExT3ZCY3Mwd0hlTFdpcVoyIiwiaWF0IjoxNTQzODI0NDA2LCJleHAiOjE1NDM4MjgwMDYsImVtYWlsIjoic2FnYXIucmFqYWtAZ3N0ZWRnZS5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjExODQwMzE5MDQ3MDAxNjk3NjMxNSJdLCJlbWFpbCI6WyJzYWdhci5yYWpha0Bnc3RlZGdlLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6Imdvb2dsZS5jb20ifX0.Nle9bQVpHiaefXNeg73-Y_ZJ5kYgNXi6oGIWhOk20LJEl4G-HIA-W118puJgK4YhejxIsXSm5_1eoFFEdkhusCO1TEPIJOFiyE_WC6frLO8Gj1NSndZdD124xeYEqEnnop4ky-9errhFYz6f9duhAxPO6F2AAO6haL3oY2rmSpcw77AHMbf1GPdPUtk3pHZkk1MsGxCdknMStQP8tgYMrxoO3NHylnLMwnmPlO62TrGNVSaYGxEIMLsnnnKDq9l97suPBGPfC6PAhGk4PwL6aT1OXv8_7-u6iq7rGE65UfYi4lnQgXMPDz6i3WromYatZCnUQTwrKEIDrcmPWXLQDw"
-  },
-  "data": "{"email": "test@gmail.com","userType": 5,"firstName": "Robin","lastName": "Gaur","mobile": "6465464546","gender": "M","communities": ["J", "M"],"initiatives": { "trainings": ["training01", "training"], "events\": ["event01"]},"profile": {"facebook": "
-  ","twitter": "dldkl","linkedin": "linkedin","website": "","current_location": "","education": [{"university_name": "","major": "","class": "","year_of_completion": 12,"relevent_courses": ["ada", "Sadas"],"achievements": ["achievements", "achievements", "achievements"],"extra_curriculars": []}],"work_experience": [{"company": "","location": " ","start_date": "12/02/2018","end_date": "","position": "","summary_of_responsibilities": "","achievements": ["achievements"]}],"current_employment_state": "ST","industry": ["industry", "industry"],"community_connect": {"skills": ["skills", "skills"],"skills_to_learn": ["skills_to_learn"],"about_you": "about_you about_you about_you","potential_matches": ["potential_matches", "potential_matches"]}}}",
-};
-$.ajax(settings).done(function (response) {
-  console.log(response);
-});
-*/
 </script>
+<script src="js/profile-validation.js"></script>
 <script type="text/javascript" src="js/auth.js"></script>
-<script src="js/profile_formvalidation.js"></script>
+
 
 </body>
 </html>

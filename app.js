@@ -1,6 +1,9 @@
-
+if (process.env.NODE_ENV !== 'production') {
+require('dotenv').load();
+}
 const express = require("express");
 var session = require('express-session');
+//var AzureTablesStoreFactory = require('connect-azuretables')(session);
 var https=require('https');
 var cookieParser = require('cookie-parser');
 
@@ -27,7 +30,7 @@ let { passwordroutes }=require("./routes/pass-auth-routes");
 //let { router } =require("./controllers/firebase/authentication");
 const {EmailRoutes} = require('./routes/email-routes');
 let {VolunteerRoutes} = require('./routes/volunteer-routes');
-const {FileUploadRoutes} = require('./routes/index');
+const {FileUploadRoutes} = require('./routes/file-upload-routes');
 
 const upload_math = require('./routes/upload-math');
 const upload_video = require('./routes/upload-video')
@@ -39,7 +42,9 @@ const app = express();
 
 //Middleware for body-parser
 app.use(cookieParser());
-app.use(session({secret: "i-stem",
+//var options = {storageAccount: process.env.AccountName, accessKey: process.env.AccountKey,sessionTimeOut: 60*24};
+app.use(session({
+		secret:"I-stem app",
 		resave: true,
     saveUninitialized: true}));
 app.use(bodyParser.json());
@@ -47,7 +52,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.set('views', path.join(__dirname, '/public'));
 //app.set('views', path.join(__dirname, 'views'));
-app.set('view engine','hbs');
+app.set('view engine','html');
+app.engine('html', require('hbs').__express);
 //app.set('view engine', 'jade');
 app.use("/", new VolunteerRoutes().router);
 app.use("/", new EmailRoutes().router);

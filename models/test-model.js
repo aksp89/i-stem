@@ -24,16 +24,27 @@ async function query(userType){
 	return resultlist;
 }
 
-exports.checkinfo=async function(usermail)
+exports.checkinfo=async function(usermail,idtoken)
 {
 
 		if(DbConnection.dbConnect()){
 
-		 var result=await UserInfoModel.getSchema().findOne({ login_mail:usermail }).exec();
+		 var result=await UserInfoModel.getSchema().findOne({ login_mail:usermail },{_id:0,firstName:1,lastName:1}).exec();
+
 		if(result){
-			 return true;
+			var name=result.firstName+" "+result.lastName;
+				return [true,name];
 		}else{
-			return false;
+			console.log("add user");
+			var response=await adduser(usermail,idtoken);
+			if(response==true)
+			{
+				return false;
+			}
+
+
+
+
 		}
 
 
@@ -59,10 +70,9 @@ exports.isadmin =async function(idtoken)
 
 }
 }
+//python -m rasa_core.run -d models/dialogue -u models/nlu/default/stem_nlu --enable_api --credentials credentials.yml --cors "*"
 
-
-exports.adduser=async function (email,idtoken){
-	console.log("the toke here is "+token);
+  async function adduser(email,idtoken){
 	var settings = {
   "url": "https://cors-anywhere.herokuapp.com/https://i-stem-app-v1.azurewebsites.net/user/addUser",
   "method": "POST",
@@ -74,8 +84,10 @@ exports.adduser=async function (email,idtoken){
   },
 };
 
-var result=await $.ajax(settings);
-return result.data;
+ var result= await $.ajax(settings);
+	 console.log("data is is"+result.status);
+	 //console.log(data);
+		return result.status;
 }
 
 
@@ -102,19 +114,22 @@ return result.data;
 
 }
 
-async function adminVerify(userid){
+exports.adminVerify=async function(userid){
  if(DbConnection.dbConnect()){
-		var result=await UserModel.getSchema().findOne({ userId:userid }).exec();
+		var result=await UserModel.getSchema().findOne({ userId:userid}).exec();
+		console.log("result is"+result);
 		console.log("result isadmin is"+result.isAdmin);
-		if(result.isAdmin)
+		if(result.isAdmin==true)
 		{
-			admin_exist=true
 			return true;
-		}else {
+		}else if(result.isAdmin==false){
 			return false
+		}else {
+			return null
 		}
 }
 }
+
 function routing(req,res){
 
 
@@ -122,55 +137,80 @@ function routing(req,res){
 
 }
 
+async function userdata(userEmail){
+		if(DbConnection.dbConnect()){
 
-function isuserloggedin(req,res,next){
+		 var result=await UserInfoModel.getSchema().findOne({ login_mail:userEmail }).exec();
+		if(result){
+			return true;
+		}else{
+			return false;
+}
+}
+}
+
+async function isuserloggedin(req,res,next){
+	console.log("gere");
+	if(typeof token !== 'undefined'){
+
 new Authentication().verifyIdToken(token).then((user)=>{
+
 	if(user){
-		if(profileExist){
-			next()
+		if(req.session.profileupdated){
+			next();
 		}else{
 			//res.send('please fill your profile')
-		res.render('profile');
-	}
+
+					userdata(user.email).then((profile_status)=>{
+						console.log("inside");
+			if(profile_status)
+			{
+				req.session.profileupdated=true;
+				next();
+			}else{
+				res.render('profile');
+			}
+		});
+}
 	}else{
-		res.render('login');
+		res.send('<html><head></head><body> '+
+			'<script> alert("you are not authorize to view the page , you need to login first"); window.location="/login" </script>'+
+			'</body></html>');
 	}
 
-})
+}).catch((err)=>{
+	console.log(err);
+});
+}else {
+	res.send('<html><head></head><body> '+
+		'<script> alert("you are not authorize to view the page , you need to login first"); window.location="/login" </script>'+
+		'</body></html>');
+}
 
 }
 
-function isadminloggedin(req,res,next){
+ function isadminloggedin(req,res,next){
 new Authentication().verifyIdToken(token).then((user)=>{
-	if(!admin_exist){
 	var userid=user.user_id;
 	adminVerify(userid).then((admin)=>{
-		if(admin){
-		admin_exist=true;
+		if(admin==true){
+		next();
 	}else {
-		console.log("error");
-		return;
+		res.send('<html><head></head><body> '+
+			'<script> alert("you are not authorize to view the page , you need to login first"); window.location="/login" </script>'+
+			'</body></html>');
 	}
 });
-}
-	if(user){
-		if(profileExist){
-			next()
-		}else{
-			res.send('please fill your profile')
-		res.render('profile');
-	}
-	}else{
-		res.render('login');
-	}
-
+}).catch((err)=>{
+	console.log(err);
 })
+
 
 }
 
 
  async function getUser(req,res,next){
-res.locals.data=await $.ajax({
+ res.locals.data=await $.ajax({
 	"url": "https://cors-anywhere.herokuapp.com/https://i-stem-app-v1.azurewebsites.net/user/getUserInfo",
 
 	beforeSend: function(xhr){
@@ -181,7 +221,8 @@ res.locals.data=await $.ajax({
 }).done((data)=>{
 	console.log(data);
 		console.log('success');
-	}).catch(()=>{
+	}).catch((err)=>{
+		console.log(err);
 		console.log('error');
 	});
   next();

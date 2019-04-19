@@ -1,3 +1,36 @@
+function validatePassword() {
+  // Empty check
+  if (checkIfEmpty(password)) return;
+  // Must of in certain length
+  if (!meetLength(password, 4, 100)) return;
+  // check password against our character set
+  // 1- a
+  // 2- a 1
+  // 3- A a 1
+  // 4- A a 1 @
+  //   if (!containsCharacters(password, 4)) return;
+  return true;
+}
+function validateConfirmPassword() {
+  if (password.className !== 'valid') {
+    setInvalid(confirmPassword, 'Password must be valid');
+    return;
+  }
+  // If they match
+  if (password.value !== confirmPassword.value) {
+    setInvalid(confirmPassword, 'Passwords must match');
+    return;
+  } else {
+    setValid(confirmPassword);
+  }
+  return true;
+}
+function validateEmail() {
+  if (checkIfEmpty(email)) return;
+  if (!containsCharacters(email, 5)) return;
+  return true;
+}
+
 function signup(){
 var email=document.getElementById('signup_mail').value;
 

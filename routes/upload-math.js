@@ -35,6 +35,7 @@ router.post('/', uploadStrategy, (req, res) => {
         , streamLength = req.file.buffer.length
     ;
 	console.log(token);
+  console.log("in this page"+token);
     profile.getUserInfo(token).then((user)=>{
         console.log('User Email: ' + user.data.login_mail);
                         //create container and upload image to azure storage

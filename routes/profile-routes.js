@@ -87,8 +87,9 @@ var user_lname=req.body.user_lname;
 var user_mob=req.body.user_mob;
 var gender=req.body.gender;
 var community=req.body.user_community_arr;
+console.log("community first"+community);
  community=community.toString().split(',');
-console.log(community);
+console.log("community is"+community);
 var state=req.body.state_location;
 var postcode=req.body.post_code;
 var user_training=req.body.user_training;
@@ -140,10 +141,14 @@ var potential_matches=req.body.pot_mat;
  potential_matches=potential_matches.toString().split(',');
 //volunteers
 var vol_skill=req.body.vol_skill;
+console.log("vol"+vol_skill);
  vol_skill=vol_skill.toString().split(',');
-console.log(vol_skill);
+console.log("voluinteers skill "+vol_skill);
+console.log("len"+vol_skill.length);
 var vol_types=req.body.vol_types_arr;
+console.log("voltyp lenth "+vol_types.length);
  vol_types=vol_types.toString().split(',');
+ console.log('vol_types 2'+vol_types.length);
 var vol_availability=req.body.vol_availability_obj;
 console.log("this "+vol_availability);
 if(typeof vol_availability!='undefined' && vol_availability.length>0){
@@ -157,6 +162,7 @@ for(var val in vol_availability)
 	console.log(vol_availability[val]["time_to"]);
 
 }
+
 var req_for;
 var interested_vol=[];
 var filtered_vol=[];
@@ -421,7 +427,7 @@ var potential_matches=potential_matches.toString().split(',');
 //volunteers
 var vol_skill=req.body.vol_skill;
 var vol_skill=vol_skill.toString().split(',');
-console.log(vol_skill);
+console.log("vol_skill is"+vol_skill);
 var vol_types=req.body.vol_types_arr;
 var vol_types=vol_types.toString().split(',');
 var vol_availability=req.body.vol_availability_obj;
@@ -520,7 +526,7 @@ var reqs = https.request(options, function (resp) {
   });
 });
 
-var postData = { "email": user_email ,"userType": usertype,"firstName":user_fname,"lastName": user_lname,"mobile": user_mob,"gender": gender,"communities": community,"volunteers_skills": [vol_skill],"volunteers_types": vol_types,"volunteers_availability": vol_availability,"resume_url":file_url,"State":state,"post_code":postcode, "requests": [{"request_for": req_for ,"filtered_volunteers":filtered_vol,"interested_volunteers":interested_vol,"final_volunteers":final_vol,"request_date":req_date }],"initiatives": {"trainings": [user_training],"events": [user_event]},"profile": {"facebook": user_facebook,"twitter": user_twitter,"linkedin": user_linkedin,"website": user_website,"education": [{"university_name": uni_name,"major": major,"class": uni_class,"year_of_completion": year_of_completion,"relevant_courses": [relevant_course],"achievements": [edu_achievement],"extra_curriculars": [extracurr_activity]}],"work_experience": [{"company": company_name,"location": company_loc,"start_date": start_date,"end_date": end_date,"position": position,"summary_of_responsibilities": summary_of_responsibility,"achievements": [work_achievements]}],"current_employment_state": current_emp_state,"industry": [industry]},"community_connect": {"skills": [skills],"skills_to_learn": [skills_to_learn],"about_you": about_you,"potential_matches": [potential_matches]}};
+var postData = { "email": user_email ,"userType": usertype,"firstName":user_fname,"lastName": user_lname,"mobile": user_mob,"gender": gender,"communities": community,"volunteers_skills": vol_skill,"volunteers_types": vol_types,"volunteers_availability": vol_availability,"resume_url":file_url,"State":state,"post_code":postcode, "requests": [{"request_for": req_for ,"filtered_volunteers":filtered_vol,"interested_volunteers":interested_vol,"final_volunteers":final_vol,"request_date":req_date }],"initiatives": {"trainings": [user_training],"events": [user_event]},"profile": {"facebook": user_facebook,"twitter": user_twitter,"linkedin": user_linkedin,"website": user_website,"education": [{"university_name": uni_name,"major": major,"class": uni_class,"year_of_completion": year_of_completion,"relevant_courses": [relevant_course],"achievements": [edu_achievement],"extra_curriculars": [extracurr_activity]}],"work_experience": [{"company": company_name,"location": company_loc,"start_date": start_date,"end_date": end_date,"position": position,"summary_of_responsibilities": summary_of_responsibility,"achievements": [work_achievements]}],"current_employment_state": current_emp_state,"industry": [industry]},"community_connect": {"skills": [skills],"skills_to_learn": [skills_to_learn],"about_you": about_you,"potential_matches": [potential_matches]}};
 var data=JSON.stringify(postData);
 
 reqs.write(data);
@@ -536,17 +542,14 @@ reqs.end();
 
 
 router.use('/login', (req, res)=>{
-res.render('login');
+res.render('login.hbs');
 });
 router.use('/signup',(req,res)=>{
-res.render('signup');
+res.render('signup.hbs');
 });
 
 router.use('/passwdreset', (req,res)=>{
-  res.render('passwdreset');
-});
-router.use('/volunteer',isuserloggedin, function(req, res) {
-  res.render('volunteers.hbs', { title: 'Express' });
+  res.render('passwdreset.hbs');
 });
 
 router.use("/update",getUser,function(req,res){
@@ -556,23 +559,25 @@ router.use("/update",getUser,function(req,res){
 
 });
 
-router.use("/profile",isuserloggedin,function(req,res){
-	res.render('profile');
+router.use("/profile",function(req,res){
+	res.render('profile.hbs');
 
 });
 
-router.use("/profileview",getUser,function(req,res){
+router.use("/profileview",[isuserloggedin,getUser],function(req,res){
   var data=res.locals.data;
   console.log(data);
   res.render('profileview.hbs',{data:JSON.stringify(data.data)});
 
 });
 
-router.use("/index",function(req,res){
+router.use("/",function(req,res){
 	res.render('index');
 
 });
 router.use("/mail",function(req,res){
+  //res.send('<script>alert("hello");window.location="/profile"</script>')
+
 	res.render('mail');
 
 });

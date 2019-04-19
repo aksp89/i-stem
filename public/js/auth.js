@@ -1,4 +1,4 @@
-/*
+   /*
 var config = {
 
 			apiKey: "AIzaSyDwBiGVQSX948mfAjWruQbGcPLnIeUBQ5Y",
@@ -30,66 +30,55 @@ function homepage(){
 
 		function signOut() {
         firebase.auth().signOut().then((a) => {
-            localStorage.removeItem('setadmin');
             localStorage.removeItem('exp-time');
             localStorage.removeItem('token');
-
-
+            $.get('/password-authentication/session-signout',function(data,status)
+            {
+                console.log("signout response"+data);
+            });
         })
         .catch((err) => {
                 alert(err);
             });
-     isuserloggedin();
+          isuserloggedin();
 		}
 
 
 
-async function isuserloggedin(){
+async function isuserlloggedin(){
 
-
-      // localStorage.setItem("onauth",'checked');
-firebase.auth().onAuthStateChanged(function(user) {
-  if((user) && (user.emailVerified))
-{
-    var admin=localStorage.getItem('setadmin');
-    console.log(admin);
-    if(admin=='true'){
-      //  localStorage.setItem('setadmin',true);
-        useradmin()
-      }
-       if(admin=='false'){
-        //localStorage.setItem('setadmin',false);
-        nonadmin()
-      }
-    if(admin==null){
-      var email=user.email;
-      console.log(email);
-    if(email.includes("chowgules"))
+  $.get('/password-authentication/toggle-signin',function(data,status)
+  {
+    console.log("data returned is"+data);
+    if(data=="useradmin")
     {
-      localStorage.setItem('setadmin',true);
-      useradmin();
-    } else{
-      localStorage.setItem('setadmin',false);
-      nonadmin();
+      admin();
     }
-                    }
+    if(data=="user")
+    {
+      user();
+    }
+    if(data=="nouser")
+    {
+      nouser();
+    }
 
-	 console.log("user bro logged in");
-        }
-                else
-                {
-                localStorage.removeItem('setadmin');
-                    nouser();
 
-                }
-                });
-              }
-
+  });
+}
 
 
 function generate_token(){
   firebase.auth().onAuthStateChanged(function(user) {
-  if ((user) && (user.emailVerified)) {
+    var lastsignin=new Date(user.metadata.lastSignInTime);
+    var now = new Date().getTime();
+    lastsignin=lastsignin.getTime();
+    if(now-lastsignin>(24*60*60*1000))
+    {
+        alert("user has been signed out")
+        signOut();
+    }
+  else if((user) && (user.emailVerified)) {
   firebase.auth().currentUser.getIdToken(true).then((a) => {
     $.post('/password-authentication/user_auth',{ token: a },function(data,status)
     {
@@ -104,6 +93,10 @@ function generate_token(){
   console.log(err);
 });
 });
+} else {
+  {
+    console.log("something went wrong");
+  }
 }
 
 });
@@ -118,7 +111,9 @@ function sendtoken(){
   {
   $.post('/password-authentication/user_auth',{ token: token },function(data,status)
   {
-
+    console.log(data);
+    console.log(status);
+      console.log(token);
   }).catch((err)=>{
     console.log(err);
   });
@@ -129,20 +124,21 @@ function sendtoken(){
 }
 }
 
-function useradmin(){
-  var adminvalue='<div id="dropdown_admin"><div class="dropdown"><button class="dropbtn">admin<i class="fa fa-caret-down"></i></button><div class="dropdown-content"><a href="profileview">user profile</a><div id="alluser"><a href="istemusers">All user</a></div><a href="" onclick="signOut()">sign out</a></div></div></div>'
-  document.getElementById('admin').innerHTML=adminvalue;
+function admin(){
+  var adminvalue='<li class="nav-item dropdown"><a class="nav-link dropdown-toggle color-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">User</a><div class="dropdown-menu" aria-labelledby="navbarDropdown"><a class="dropdown-item" href="profileview">User Profile</a><a class="dropdown-item" href="istemusers">All Users</a><a class="dropdown-item" href="" onclick="signOut()">sign out</a></div></li>'
+  document.getElementById('login-status').innerHTML=adminvalue;
 }
-function nonadmin(){
-  var users='<div id="dropdown"><div class="dropdown"><button class="dropbtn">user<i class="fa fa-caret-down"></i></button><div class="dropdown-content"><a href="profileview">user profile</a><a href="" onclick="signOut()">sign out</a></div></div></div>'
-  document.getElementById('user').innerHTML=users;
+function isUser(email){
+  var users='<li class="nav-item dropdown"><a class="nav-link dropdown-toggle color-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'+email+'</a><div class="dropdown-menu" aria-labelledby="navbarDropdown"><a class="dropdown-item" href="profileview">User Profile</a><a class="dropdown-item" href="" onclick="signOut()">sign out</a></div></li>'
+  document.getElementById('login-status').innerHTML=users;
 }
 function nouser(){
-  var nouser='<a href="login">login</a>';
-  document.getElementById('login').innerHTML=nouser;
+  var nouser='<li class="nav-item"><a class="nav-link color-white" href="login">Login</a></li>';
+  document.getElementById('login-status').innerHTML=nouser;
   localStorage.removeItem('setadmin');
 }
-/*
+
+
 function togglesignin(){
 //  var auth=localStorage.getItem('onauth')
   console.log("ayuth is"+auth);
@@ -150,17 +146,32 @@ function togglesignin(){
   //var user = localStorage.getItem('setadmin');
   if(user=='true')
   {
-    useradmin();
+    admin();
   }else if(user=='false')
   {
-    nonadmin();
+    user();
   }else if(user==null){
     nouser();
   }
 }
 }
-*/
 
+async function isuserloggedin(){
+
+
+      // localStorage.setItem("onauth",'checked');
+firebase.auth().onAuthStateChanged(function(user) {
+  if((user) && (user.emailVerified))
+{
+  isUser(user.email);
+    }else
+                {
+
+                    nouser();
+
+                }
+                });
+              }
 
 window.onload=function(){
 sendtoken();

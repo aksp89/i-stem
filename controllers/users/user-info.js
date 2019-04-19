@@ -104,8 +104,8 @@ class UserInfo {
 				console.log("Db connected.");
 				return UserModel.getSchema().findOne({
 					userId: user.userId,
-					status: 1,
-					isAdmin: true
+					status: 1
+				//	isAdmin: true
 				}).exec();
 			})
 			.then((user_found) => {

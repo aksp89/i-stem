@@ -10,7 +10,9 @@ class passwordroutes{
 		init(){
 
 			this.router
-		  .post("/user_auth",PasswordAuthenticate.user_Auth);
+		  .post("/user_auth",PasswordAuthenticate.user_Auth)
+			.get("/session-signout",PasswordAuthenticate.signout)
+			.get("/toggle-signin",PasswordAuthenticate.togglelogin);
 		}
 	}
 

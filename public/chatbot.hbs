@@ -1,0 +1,33 @@
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script>
+$(document).ready(function(){
+
+    $("#button").click(function(){
+    var message=document.getElementById("message").value;
+   console.log(message);
+   $.ajaxSetup({
+    headers: {"Content-Type": "application/json"}
+    });
+
+$.ajax({
+    url: "http://localhost:5005/webhooks/rest/webhook",
+    type: "POST",
+    data: '{ "sender": message}'
+    }).done(function(data) {
+
+        console.log(data);
+    })
+    .fail(function (err){
+        console.log(err);
+    });//done
+
+    });//end of click
+
+});
+
+</script>
+<input type="text" name="message" id="message"><br>
+<input type="button" id="button" value="Click me"><br>
+</html>

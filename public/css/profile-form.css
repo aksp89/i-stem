@@ -40,7 +40,7 @@ cursor: pointer;
 width: 100%;
 
 }
-#personal_info,#Initiative,#profile,#prof_education,#work_exp,#community_connect,#volunteer{
+#usertype,#personal_info,#Initiative,#profile,#prof_education,#work_exp,#community_connect,#volunteer{
   padding: 20px;
   display: block;
   border:2px solid #fcefca;

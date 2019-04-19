@@ -9,9 +9,6 @@ const { JSDOM } = jsdom;
 const { window } = new JSDOM();
 const { document } = (new JSDOM('')).window;
 var $ = jQuery = require('jquery')(window);
-var useradded=false;
-var tokensent=false;
-var profileupdated=false;
 const app = express();
 const { Authentication } = require("../firebase/authentication");
 
@@ -25,49 +22,36 @@ class PasswordAuthenticate {
         // firebase.initializeApp(serviceAccount.web_config);
     }
 	static user_Auth(req,res){
-    console.log(req.body.token);
  var idtoken=req.body.token;
  global.token=idtoken;
-
-console.log("user after function"+useradded);
-if(!req.session.useradded)
+ console.log("token is"+token);
+ 
+if(!req.session.profilecheck)
 {
-  new Authentication().verifyIdToken(token).then(function(decodedToken){
-    var email=decodedToken.email;
-    console.log(decodedToken);
-    testmodel.adduser(email,token).then((response)=>{
-      console.log(response);
-      req.session.useradded=true;
-  }).catch((error)=>{
-    console.log(error);
-  });
-}).catch((err)=>{
-  console.log(err);
-})
-}
-if(!req.session.profileupdated)
-{
-  console.log("user not added");
+//  console.log("user not added");
 new Authentication().verifyIdToken(idtoken).then(function(decodedToken){
+  req.session.profilecheck=true;
+  req.session.usertoggle=true;
+  //req.session.isadmin=testmodel.adminVerify(decodedToken.user_id);
   var usermail=decodedToken.email;
-  testmodel.checkinfo(usermail).then((data)=>{
-    console.log("data iss"+data);
-  if(data){
-    profileupdated=true;
-    res.send(data)
-  }else{
-    res.send(data)
-    profileupdated=false;
+  testmodel.checkinfo(usermail,idtoken).then((data)=>{
+  //  console.log("data iss"+data);
+    req.session.usersName=data[1];
+    req.session.usersEmail=usermail;
+  if(data[0]===true){
+    req.session.profileupdated=true;
+    res.send(data[0])
+  }if(data===false){
+    res.send(data);
   }
   //console.log("profile updated"+profileupdated);
 }).catch((err)=>{
   console.log(err);
-  console.log("here ther error");
+    res.send(true);
 });
 
 }).catch((err)=>{
-  console.log(err);
-  console.log("here error 2");
+
 });
 
 
@@ -75,8 +59,44 @@ new Authentication().verifyIdToken(idtoken).then(function(decodedToken){
 
 }
 
+static togglelogin(req,res)
+{
 
+console.log("toggle"+req.session.usertoggle);
+if(req.session.usertoggle==true){
 
+if(req.session.isadmin==true)
+{
+    res.send("useradmin");
+}
+
+if(req.session.isadmin==false)
+{
+    res.send("user");
+}
+
+if(req.session.isadmin==null)
+{
+  var email=req.session.usersEmail;
+  if(email.includes("chowgules"))
+  {
+    res.send("useradmin");
+  }
+  else {
+    res.send("user");
+  }
+}
+
+}else{
+  res.send("nouser");
+      }
+
+}
+
+  static signout(req,res){
+    req.session.destroy();
+    res.send("session destroyed")
+  }
 
 
 }
